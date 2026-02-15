@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agents - Accueil</title>
+  <style>
+    :root {
+      --bg: #0e1a24;
+      --bg-soft: #152636;
+      --card: #1d3145;
+      --text: #f2f7fb;
+      --muted: #b9c8d6;
+      --accent: #18a999;
+      --accent-2: #f4b942;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(24, 169, 153, 0.25), transparent 35%),
+        radial-gradient(circle at 85% 10%, rgba(244, 185, 66, 0.2), transparent 32%),
+        var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    main {
+      width: min(980px, 100%);
+      background: linear-gradient(160deg, rgba(29, 49, 69, 0.9), rgba(21, 38, 54, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 34px;
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 26px;
+    }
+
+    .dashboards {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 6px;
+      text-decoration: none;
+      text-align: center;
+      color: #072019;
+      background: var(--accent);
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 12px;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .btn.secondary {
+      background: var(--accent-2);
+      color: #2b1f00;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .hint {
+      margin-top: 20px;
+      font-size: 0.88rem;
+      color: #9eb1c4;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Hub des Agents</h1>
+    <p>
+      Cette page sert d'accueil du projet. Choisissez le dashboard à ouvrir
+      pour accéder directement à l'espace de travail correspondant.
+    </p>
+
+    <section class="dashboards" aria-label="Accès aux dashboards">
+      <article class="card">
+        <h2>Dashboard Développement</h2>
+        <p>Suivi des rôles techniques et organisation de l'équipe dev.</p>
+        <a class="btn" href="agent-dev/dashboard.html">Ouvrir le dashboard dev</a>
+      </article>
+
+      <article class="card">
+        <h2>Dashboard Communication</h2>
+        <p>Pilotage des rôles marketing, contenu et stratégie de communication.</p>
+        <a class="btn secondary" href="agent-com/dashboard-comm.html">Ouvrir le dashboard com</a>
+      </article>
+    </section>
+
+    <p class="hint">Astuce: définissez cette page comme point d'entrée (`index.html`).</p>
+  </main>
+</body>
+</html>
