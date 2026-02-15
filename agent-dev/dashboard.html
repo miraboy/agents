@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dream Team — Sous-Agents Claude</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #00ff88;
+    --accent2: #7c5cfc;
+    --accent3: #ff6b35;
+    --text: #e8e8f0;
+    --muted: #5a5a72;
+    --glow: rgba(0,255,136,0.15);
+  }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  /* Header */
+  header {
+    margin-bottom: 56px;
+    position: relative;
+  }
+
+  .header-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-tag::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 560px;
+    line-height: 1.8;
+  }
+
+  /* Hierarchy section */
+  .hierarchy {
+    margin-bottom: 64px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hierarchy::before {
+    content: 'ORGANIGRAMME';
+    position: absolute;
+    top: 16px; right: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.3em;
+  }
+
+  .org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding-top: 16px;
+  }
+
+  .org-level {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+    position: relative;
+  }
+
+  .org-connector-v {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, var(--accent), var(--border));
+    margin: 0 auto;
+  }
+  .org-connector-h {
+    position: absolute;
+    top: -1px; left: 50%;
+    transform: translateX(-50%);
+    height: 1px;
+    background: var(--border);
+  }
+
+  .org-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    position: relative;
+  }
+  .org-node::before {
+    content: '';
+    position: absolute;
+    top: -28px;
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+  }
+  .org-node:first-child::before, .org-node:last-child::before { display: none; }
+
+  .org-card {
+    padding: 10px 18px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.2s;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .org-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 16px var(--glow);
+    transform: translateY(-2px);
+  }
+  .org-card.user { 
+    border-color: var(--accent3); 
+    color: var(--accent3);
+    box-shadow: 0 0 24px rgba(255,107,53,0.2);
+  }
+  .org-card.chef { 
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 24px var(--glow);
+  }
+  .org-card.orch { border-color: var(--accent2); color: var(--accent2); }
+  .org-card.spec { font-size: 12px; }
+
+  .org-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Agents grid */
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .agent-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--card-color, var(--accent)) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .agent-card:hover {
+    border-color: var(--card-color, var(--accent));
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 24px rgba(0,0,0,0.2);
+    z-index: 2;
+  }
+  .agent-card:hover::after { opacity: 0.05; }
+
+  .agent-card.highlighted {
+    border-color: var(--card-color, var(--accent));
+    box-shadow: 0 0 32px rgba(0,0,0,0.3);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .agent-icon {
+    width: 48px; height: 48px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
+
+  .agent-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 1px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .badge.model { color: var(--muted); border-color: var(--border); }
+  .badge.role {
+    color: var(--card-color, var(--accent));
+    border-color: var(--card-color, var(--accent));
+    background: rgba(255,255,255,0.03);
+  }
+
+  .agent-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .agent-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .agent-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #9999aa;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .agent-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tool-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 1px;
+  }
+
+  /* Detail panel */
+  .detail-panel {
+    position: fixed;
+    right: -520px;
+    top: 0; bottom: 0;
+    width: 480px;
+    background: #0d0d14;
+    border-left: 1px solid var(--border);
+    padding: 48px 36px;
+    overflow-y: auto;
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+  }
+  .detail-panel.open { right: 0; }
+
+  .panel-close {
+    position: absolute;
+    top: 24px; right: 24px;
+    width: 32px; height: 32px;
+    background: var(--border);
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    transition: background 0.2s;
+  }
+  .panel-close:hover { background: var(--accent); color: #000; }
+
+  .panel-content h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .panel-content .sub { 
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .panel-section { margin-bottom: 28px; }
+  .panel-section h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-section p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #9999aa;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .skill-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #8888aa;
+    padding-left: 12px;
+    border-left: 2px solid var(--border);
+    line-height: 1.5;
+  }
+  .skill-item span {
+    color: var(--card-color, var(--accent));
+    font-weight: 700;
+  }
+
+  .install-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    line-height: 1.8;
+    position: relative;
+  }
+  .install-box .comment { color: var(--muted); }
+  .install-box .cmd { color: var(--accent2); }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+  .stat {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    position: relative;
+  }
+  .stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Workflow section */
+  .workflow {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 36px;
+    margin-bottom: 48px;
+  }
+  .workflow h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: var(--text);
+  }
+  .flow-steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 140px;
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #8888aa;
+  }
+  .step-text strong { color: var(--text); font-size: 14px; display: block; }
+  .flow-arrow {
+    color: var(--border);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Overlay */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .overlay.visible { opacity: 1; pointer-events: all; }
+
+  @media (max-width: 600px) {
+    .agents-grid { grid-template-columns: 1fr; }
+    .detail-panel { width: 100%; right: -100%; }
+    .stats-bar { flex-direction: column; }
+    .flow-steps { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-tag">Claude Code · Sous-Agents</div>
+    <h1>Dream Team Dev</h1>
+    <p class="subtitle">Votre équipe virtuelle de développement — 8 agents spécialisés qui travaillent ensemble pour concevoir, coder, tester et déployer vos projets.</p>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-value">11</span>
+      <span class="stat-label">Agents actifs</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">3</span>
+      <span class="stat-label">Niveaux hiérachiques</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">∞</span>
+      <span class="stat-label">Projets parallèles</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">24/7</span>
+      <span class="stat-label">Disponibilité</span>
+    </div>
+  </div>
+
+  <!-- Hierarchy -->
+  <div class="hierarchy">
+    <div class="org-chart">
+      <!-- You -->
+      <div class="org-level">
+        <div class="org-node" style="--card-color: var(--accent3)">
+          <div class="org-card user">👤 Vous (Utilisateur)</div>
+          <div class="org-label">Donneur d'ordres</div>
+        </div>
+      </div>
+      <div class="org-connector-v"></div>
+      <!-- Chef d'équipe -->
+      <div class="org-level">
+        <div class="org-node">
+          <div class="org-card chef">🧑‍💼 chef-equipe</div>
+          <div class="org-label">Interlocuteur principal</div>
+        </div>
+      </div>
+      <div class="org-connector-v"></div>
+      <!-- Orchestrateur -->
+      <div class="org-level">
+        <div class="org-node">
+          <div class="org-card orch">⚙️ orchestrateur</div>
+          <div class="org-label">Coordination & délégation</div>
+        </div>
+      </div>
+      <div class="org-connector-v" style="background: linear-gradient(to bottom, var(--accent2), var(--border))"></div>
+      <!-- Specialists -->
+      <div class="org-level" style="gap: 8px; position: relative; padding-top: 4px;">
+        <div style="position:absolute; top:0; left:12%; right:12%; height:1px; background: var(--border);"></div>
+        <div class="org-node">
+          <div class="org-card spec">🏗️ architecte</div>
+          <div class="org-label">Architecture</div>
+        </div>
+        <div class="org-node">
+          <div class="org-card spec">💻 frontend-dev</div>
+          <div class="org-label">UI / Mobile</div>
+        </div>
+        <div class="org-node">
+          <div class="org-card spec">⚡ backend-dev</div>
+          <div class="org-label">API / BDD</div>
+        </div>
+        <div class="org-node">
+          <div class="org-card spec">🚀 devops</div>
+          <div class="org-label">Infra / CI-CD</div>
+        </div>
+        <div class="org-node">
+          <div class="org-card spec">🧪 qa-testeur</div>
+          <div class="org-label">Qualité</div>
+        </div>
+        <div class="org-node">
+          <div class="org-card spec">🔒 securite</div>
+          <div class="org-label">Cybersec</div>
+        </div>
+        <div class="org-node">
+          <div class="org-card spec">📝 tech-writer</div>
+          <div class="org-label">Docs</div>
+        </div>
+      </div>
+      <div class="org-connector-v" style="background: linear-gradient(to bottom, var(--border), #ff4cff44)"></div>
+      <!-- Meta agents -->
+      <div class="org-level" style="gap: 24px; position: relative; padding-top: 4px;">
+        <div style="position:absolute; top:0; left:30%; right:30%; height:1px; background: linear-gradient(to right, transparent, #ff4cff44, transparent);"></div>
+        <div class="org-node" style="--card-color: #ff4cff">
+          <div class="org-card spec" style="border-color:#ff4cff44; color:#ff4cff;">🏭 agent-maker</div>
+          <div class="org-label">Crée les agents</div>
+        </div>
+        <div class="org-node" style="--card-color: #00e5ff">
+          <div class="org-card spec" style="border-color:#00e5ff44; color:#00e5ff;">🧠 context-manager</div>
+          <div class="org-label">Mémoire projet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workflow -->
+  <div class="workflow">
+    <h2>Comment ça fonctionne</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <div class="step-text"><strong>Tu parles</strong>Décris ton besoin au chef-equipe en langage naturel</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <div class="step-text"><strong>Il clarifie</strong>Le chef-equipe reformule et valide avec toi</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <div class="step-text"><strong>Orchestration</strong>L'orchestrateur décompose et assigne les tâches</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <div class="step-text"><strong>Spécialistes</strong>Chaque agent travaille en parallèle ou en séquence</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <div class="step-text"><strong>Livraison</strong>Le chef-equipe consolide et te présente le résultat</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agents Grid -->
+  <div class="section-label">Agents spécialisés</div>
+  <div class="agents-grid" id="agentsGrid"></div>
+
+  <!-- Install section -->
+  <div class="section-label">Installation</div>
+  <div class="install-box">
+    <div class="comment"># 1. Copier les agents dans votre projet</div>
+    <div>mkdir -p .claude/agents</div>
+    <div>cp agent-dev/*.md .claude/agents/</div>
+    <br>
+    <div class="comment"># 2. (Optionnel) Installation globale</div>
+    <div>cp agent-dev/*.md ~/.claude/agents/</div>
+    <br>
+    <div class="comment"># 3. Lancer Claude Code et appeler le chef d'équipe</div>
+    <div class="cmd">Use the chef-equipe subagent to start</div>
+  </div>
+
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
+
+<!-- Detail Panel -->
+<div class="detail-panel" id="detailPanel">
+  <button class="panel-close" onclick="closePanel()">✕</button>
+  <div class="panel-content" id="panelContent"></div>
+</div>
+
+<script>
+const agents = [
+  {
+    id: 'chef-equipe',
+    icon: '🧑‍💼',
+    name: 'chef-equipe',
+    title: 'Lead Dev / CTO virtuel',
+    role: 'Interface',
+    model: 'Opus',
+    color: '#00ff88',
+    desc: "Ton interlocuteur principal. Il comprend ta vision, clarifie les besoins, brief l'équipe et te présente les résultats. C'est lui que tu contactes en premier.",
+    tools: ['Read', 'Write', 'Edit', 'Glob', 'Task'],
+    highlight: true,
+    skills: [
+      { label: 'Communication', detail: 'Reformulation, clarification, reporting' },
+      { label: 'Vision produit', detail: 'Compréhension des besoins métier' },
+      { label: 'Coordination', detail: 'Brief de l\'orchestrateur' },
+      { label: 'Gestion des risques', detail: 'Anticipation des problèmes techniques' },
+    ],
+    invocation: 'Use the chef-equipe subagent to start the project',
+    personality: 'Humain, direct, sans jargon inutile. Il pose des questions courtes et précises.'
+  },
+  {
+    id: 'orchestrateur',
+    icon: '⚙️',
+    name: 'orchestrateur',
+    title: 'Cerveau logistique',
+    role: 'Coordination',
+    model: 'Opus',
+    color: '#7c5cfc',
+    desc: "Décompose les projets en sous-tâches, assigne les agents au bon moment, gère les flux parallèles et séquentiels. Ne code pas — coordonne.",
+    tools: ['Read', 'Write', 'Glob', 'Task', 'Bash'],
+    highlight: true,
+    skills: [
+      { label: 'Planification', detail: 'Décomposition de tâches complexes' },
+      { label: 'Délégation', detail: 'Assignation au bon spécialiste' },
+      { label: 'Parallélisme', detail: 'Orchestration d\'agents en simultané' },
+      { label: 'Synthèse', detail: 'Agrégation des résultats' },
+    ],
+    invocation: 'Use the orchestrateur subagent to plan this feature',
+    personality: 'Méthodique, structuré, logique. Pense en dépendances et flux de travail.'
+  },
+  {
+    id: 'architecte',
+    icon: '🏗️',
+    name: 'architecte',
+    title: 'Architecte technique senior',
+    role: 'Architecture',
+    model: 'Sonnet',
+    color: '#ff9500',
+    desc: "Conçoit les systèmes, choisit les technologies, rédige les ADR. Garantit la scalabilité et la maintenabilité. Consulter avant tout choix technique structurant.",
+    tools: ['Read', 'Write', 'Edit', 'Glob', 'Grep'],
+    skills: [
+      { label: 'Microservices', detail: 'Event-driven, CQRS, DDD' },
+      { label: 'Stack Web', detail: 'React, Next.js, Node.js, APIs REST/GraphQL' },
+      { label: 'Mobile', detail: 'React Native, Flutter, offline-first' },
+      { label: 'Cloud', detail: 'AWS, GCP, serverless vs containers' },
+    ],
+    invocation: 'Use the architecte subagent to design the system',
+    personality: 'Analytique, propose toujours 2-3 options avec trade-offs explicites.'
+  },
+  {
+    id: 'frontend-dev',
+    icon: '💻',
+    name: 'frontend-dev',
+    title: 'Développeur UI/UX & Mobile',
+    role: 'Frontend',
+    model: 'Sonnet',
+    color: '#00d4ff',
+    desc: "Crée les interfaces web et mobile. Maîtrise React, Next.js, Vue, React Native et Flutter. Toujours en TypeScript strict, toujours accessible.",
+    tools: ['Read', 'Write', 'Edit', 'Bash', 'Glob'],
+    skills: [
+      { label: 'React 18+', detail: 'Hooks, Context, Zustand, React Query' },
+      { label: 'Next.js 14+', detail: 'App Router, Server Components, SSR/SSG' },
+      { label: 'React Native', detail: 'Expo, navigation, modules natifs' },
+      { label: 'Flutter', detail: 'Dart, Riverpod, architecture offline-first' },
+    ],
+    invocation: 'Use the frontend-dev subagent to build the UI',
+    personality: 'L\'œil d\'un designer, la rigueur d\'un ingénieur. TypeScript always.'
+  },
+  {
+    id: 'backend-dev',
+    icon: '⚡',
+    name: 'backend-dev',
+    title: 'Développeur API & Données',
+    role: 'Backend',
+    model: 'Sonnet',
+    color: '#ff6b35',
+    desc: "Construit les APIs, modélise les données, implémente la logique métier. Maîtrise Node.js, Python, PostgreSQL, Redis et les architectures événementielles.",
+    tools: ['Read', 'Write', 'Edit', 'Bash', 'Glob'],
+    skills: [
+      { label: 'Node.js / NestJS', detail: 'Express, Fastify, architecture modulaire' },
+      { label: 'PostgreSQL', detail: 'Prisma, Drizzle, optimisation queries' },
+      { label: 'APIs', detail: 'REST (OpenAPI), GraphQL, WebSockets' },
+      { label: 'Auth', detail: 'JWT, OAuth2, Passport.js, sessions sécurisées' },
+    ],
+    invocation: 'Use the backend-dev subagent to build the API',
+    personality: 'Pense en données et performance. Jamais de secrets en dur.'
+  },
+  {
+    id: 'devops',
+    icon: '🚀',
+    name: 'devops',
+    title: 'Ingénieur Infrastructure & CI/CD',
+    role: 'DevOps',
+    model: 'Sonnet',
+    color: '#a0e060',
+    desc: "Configure les pipelines CI/CD, containerise avec Docker, gère le cloud et le monitoring. Automatise tout ce qui peut l'être.",
+    tools: ['Read', 'Write', 'Edit', 'Bash', 'Glob'],
+    skills: [
+      { label: 'GitHub Actions', detail: 'Pipelines complets build / test / deploy' },
+      { label: 'Docker', detail: 'Multi-stage builds, docker-compose, Kubernetes' },
+      { label: 'Cloud', detail: 'AWS (ECS, Lambda, RDS), GCP, Vercel, Railway' },
+      { label: 'Monitoring', detail: 'Prometheus, Grafana, Loki, alerting' },
+    ],
+    invocation: 'Use the devops subagent to set up the deployment pipeline',
+    personality: 'Automatise d\'abord. Chaque déploiement doit être réversible.'
+  },
+  {
+    id: 'qa-testeur',
+    icon: '🧪',
+    name: 'qa-testeur',
+    title: 'Ingénieur Qualité & Tests',
+    role: 'QA',
+    model: 'Haiku',
+    color: '#f0c040',
+    desc: "Écrit les tests unitaires, d'intégration et E2E. Identifie les bugs, garantit la robustesse avant toute mise en production.",
+    tools: ['Read', 'Write', 'Edit', 'Bash', 'Glob'],
+    skills: [
+      { label: 'Tests unitaires', detail: 'Jest, Vitest, Pytest — couverture > 80%' },
+      { label: 'Tests E2E', detail: 'Playwright, Cypress, Detox (mobile)' },
+      { label: 'Tests API', detail: 'Supertest, k6 (charge), Artillery' },
+      { label: 'Rapport de bugs', detail: 'Sévérité, steps to reproduce, régression' },
+    ],
+    invocation: 'Use the qa-testeur subagent to write tests for this feature',
+    personality: 'Pense comme un attaquant, teste comme un utilisateur lambda.'
+  },
+  {
+    id: 'securite',
+    icon: '🔒',
+    name: 'securite',
+    title: 'Expert Cybersécurité Applicative',
+    role: 'Sécurité',
+    model: 'Sonnet',
+    color: '#ff4060',
+    desc: "Audite le code, identifie les vulnérabilités OWASP, implémente les bonnes pratiques. Bloque la production en cas de faille critique.",
+    tools: ['Read', 'Grep', 'Glob', 'Bash'],
+    skills: [
+      { label: 'OWASP Top 10', detail: 'Injection, XSS, CSRF, IDOR, SSRF...' },
+      { label: 'Auth & Tokens', detail: 'JWT, OAuth2, MFA, gestion des secrets' },
+      { label: 'Headers HTTP', detail: 'CSP, HSTS, CORS, configuration TLS' },
+      { label: 'Audit de code', detail: 'SAST, détection de secrets, dépendances' },
+    ],
+    invocation: 'Use the securite subagent to audit this code',
+    personality: 'Pense comme un attaquant pour défendre comme un architecte.'
+  },
+  {
+    id: 'tech-writer',
+    icon: '📝',
+    name: 'tech-writer',
+    title: 'Rédacteur Technique',
+    role: 'Documentation',
+    model: 'Haiku',
+    color: '#c080ff',
+    desc: "Produit des READMEs clairs, documentation API, guides utilisateur et changelogs. Si la doc est bonne, personne ne pose de questions.",
+    tools: ['Read', 'Write', 'Edit', 'Glob', 'Grep'],
+    skills: [
+      { label: 'README & Guides', detail: 'Getting started, tutoriels pas-à-pas' },
+      { label: 'Documentation API', detail: 'OpenAPI/Swagger avec exemples' },
+      { label: 'ADR', detail: 'Architecture Decision Records' },
+      { label: 'Changelog', detail: 'Format Keep a Changelog, versioning' },
+    ],
+    invocation: 'Use the tech-writer subagent to document this module',
+    personality: 'Lit le code avant de le documenter. Jamais de doc inventée.'
+  },
+  {
+    id: 'agent-maker',
+    icon: '🏭',
+    name: 'agent-maker',
+    title: 'Architecte de l\'équipe',
+    role: 'Méta',
+    model: 'Opus',
+    color: '#ff4cff',
+    highlight: true,
+    desc: "Crée et optimise des sous-agents personnalisés pour n'importe quelle stack ou métier manquant. Si l'équipe ne couvre pas ton besoin, il crée l'agent qui le fera.",
+    tools: ['Read', 'Write', 'Edit', 'Glob', 'Grep'],
+    skills: [
+      { label: 'Conception d\'agents', detail: 'System prompts, outils, modèles, scope' },
+      { label: 'Stacks complètes', detail: 'Web, mobile, backend, cloud, IA/ML, Web3' },
+      { label: 'Optimisation', detail: 'Amélioration des agents existants' },
+      { label: 'Validation', detail: 'Principe de moindre privilège, cohérence' },
+    ],
+    invocation: 'Use the agent-maker subagent to create a Laravel expert agent',
+    personality: 'Un agent par rôle, précis et limité. Jamais de couteau suisse.'
+  },
+  {
+    id: 'context-manager',
+    icon: '🧠',
+    name: 'context-manager',
+    title: 'Gestionnaire de Contexte',
+    role: 'Méta',
+    model: 'Sonnet',
+    highlight: true,
+    color: '#00e5ff',
+    desc: "Gère la mémoire du projet entre les sessions. Crée et maintient CLAUDE.md, résume les longues conversations, prépare les handoffs et alerte quand le contexte est saturé.",
+    tools: ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash'],
+    skills: [
+      { label: 'CLAUDE.md', detail: 'Création et maintenance du fichier de contexte projet' },
+      { label: 'Résumés de session', detail: 'Compression dense sans perte d\'info critique' },
+      { label: 'Handoff document', detail: 'Reprise instantanée en nouvelle session' },
+      { label: 'Audit de contexte', detail: 'Détection des redondances et manques' },
+    ],
+    invocation: 'Use the context-manager subagent to save this session',
+    personality: 'Dense, précis, zéro remplissage. Chaque ligne de CLAUDE.md a de la valeur.'
+  }
+];
+
+const grid = document.getElementById('agentsGrid');
+const panel = document.getElementById('detailPanel');
+const overlay = document.getElementById('overlay');
+const panelContent = document.getElementById('panelContent');
+let activeCard = null;
+
+agents.forEach(agent => {
+  const card = document.createElement('div');
+  card.className = 'agent-card' + (agent.highlight ? ' highlighted' : '');
+  card.style.setProperty('--card-color', agent.color);
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="agent-icon">${agent.icon}</div>
+      <div class="agent-badges">
+        <span class="badge model">${agent.model}</span>
+        <span class="badge role">${agent.role}</span>
+      </div>
+    </div>
+    <div class="agent-name">${agent.name}</div>
+    <div class="agent-title">${agent.title}</div>
+    <div class="agent-desc">${agent.desc}</div>
+    <div class="agent-tools">
+      ${agent.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}
+    </div>
+  `;
+  card.addEventListener('click', () => openPanel(agent, card));
+  grid.appendChild(card);
+});
+
+function openPanel(agent, card) {
+  if (activeCard) activeCard.style.outline = 'none';
+  activeCard = card;
+  card.style.outline = `1px solid ${agent.color}`;
+
+  document.documentElement.style.setProperty('--card-color', agent.color);
+
+  panelContent.innerHTML = `
+    <div style="font-size:36px; margin-bottom:16px;">${agent.icon}</div>
+    <h2>${agent.name}</h2>
+    <div class="sub">${agent.title} · Modèle : ${agent.model}</div>
+
+    <div class="panel-section">
+      <h3>Description</h3>
+      <p>${agent.desc}</p>
+    </div>
+
+    <div class="panel-section">
+      <h3>Personnalité</h3>
+      <p>${agent.personality}</p>
+    </div>
+
+    <div class="panel-section">
+      <h3>Compétences clés</h3>
+      <div class="skills-list">
+        ${agent.skills.map(s => `
+          <div class="skill-item"><span>${s.label}</span> — ${s.detail}</div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <h3>Outils autorisés</h3>
+      <div class="agent-tools" style="margin-top:0">
+        ${agent.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <h3>Comment l'appeler</h3>
+      <div class="install-box" style="font-size:13px; word-break:break-all;">
+        ${agent.invocation}
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <h3>Fichier de config</h3>
+      <div class="install-box">
+        <div class="comment"># .claude/agents/${agent.id}.md</div>
+        <div class="cmd">name: ${agent.id}</div>
+        <div class="cmd">model: [${agent.model.toLowerCase()}]</div>
+        <div class="cmd">tools: ${agent.tools.join(', ')}</div>
+      </div>
+    </div>
+  `;
+
+  panel.classList.add('open');
+  overlay.classList.add('visible');
+}
+
+function closePanel() {
+  panel.classList.remove('open');
+  overlay.classList.remove('visible');
+  if (activeCard) {
+    activeCard.style.outline = 'none';
+    activeCard = null;
+  }
+}
+</script>
+</body>
+</html>
