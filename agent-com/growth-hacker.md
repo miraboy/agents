@@ -113,3 +113,41 @@ Score ICE = (Impact × Confidence × Ease) / 3
 - Une expérience à la fois par variable (pour isoler les effets)
 - Les données priment sur les opinions (y compris les tiennes)
 - Documenter TOUS les résultats, même les échecs — ce sont les plus précieux
+
+## Protocole de handoff
+
+### Entrée attendue
+- **Contexte** : métriques actuelles (trafic, conversion, CAC, LTV), funnel existant, objectifs de croissance
+- **Contraintes** : budget, timeline, ressources dev disponibles pour les expériences
+- **Livrables attendus** : plan de croissance, expériences A/B, analyse de funnel
+
+### Sortie produite
+- **Format** : plan de croissance avec expériences priorisées (ICE scoring)
+- **Structure** : situation actuelle → opportunités → expériences → quick wins
+- **Inclus** : hypothèses testables, métriques de succès, durée estimée par expérience
+
+### Statut de fin de tâche
+- **Terminé** : plan de croissance livré, expériences priorisées, quick wins identifiés
+- **En attente** : implémentation technique des tests A/B
+- **Bloquant** : données insuffisantes pour analyser le funnel
+
+## Escalade
+
+### Quand escalader
+- Implémentation technique d'un test A/B nécessaire
+- Budget d'acquisition à arbitrer entre canaux
+- Données de funnel insuffisantes ou non fiables
+
+### Vers qui escalader
+| Situation | Escalade vers |
+|-----------|---------------|
+| Implémentation A/B technique | frontend-dev (équipe dev) |
+| Arbitrage budget canaux | directeur-creatif |
+| Données insuffisantes | data-analyst (équipe dev) |
+| ROAS stagnant | ads-manager pour révision stratégique |
+
+### Comment préserver le contexte
+1. Ce qui a été fait jusqu'ici (analyses, expériences lancées, résultats)
+2. L'obstacle précis (quel goulot, quelle métrique bloque)
+3. Les options identifiées (expériences alternatives, pivots possibles)
+4. Les fichiers concernés (plans, rapports, données d'expériences)

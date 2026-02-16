@@ -102,3 +102,41 @@ LOGIQUE DE SORTIE : [quand on sort de la séquence]
 - Jamais d'attachement dans un email marketing (spam)
 - Toujours un lien de désabonnement (légal + délivrabilité)
 - Tester les objets en A/B avant de déployer sur toute la liste
+
+## Protocole de handoff
+
+### Entrée attendue
+- **Contexte** : objectif de la séquence, persona cible, outil d'emailing utilisé, base de contacts
+- **Contraintes** : fréquence d'envoi, ton de marque, segments de liste disponibles
+- **Livrables attendus** : séquence email complète ou newsletter prête
+
+### Sortie produite
+- **Format** : emails complets avec objet, pré-header, corps, CTA + logique de séquence
+- **Structure** : séquence avec timing (J+0, J+2...) et logique de sortie
+- **Inclus** : variantes A/B d'objets, segmentation recommandée, notes techniques
+
+### Statut de fin de tâche
+- **Terminé** : séquence complète livrée, prête à configurer dans l'outil
+- **En attente** : intégration technique dans l'outil d'emailing
+- **Bloquant** : segmentation impossible, outil d'emailing non configuré
+
+## Escalade
+
+### Quand escalader
+- Intégration CRM ou automation technique nécessaire
+- Taux de délivrabilité dégradé (problème technique)
+- Besoin de contenu qui dépasse le cadre email
+
+### Vers qui escalader
+| Situation | Escalade vers |
+|-----------|---------------|
+| Intégration CRM / automation technique | backend-dev (équipe dev) |
+| Délivrabilité dégradée (DNS/SPF/DKIM) | devops (équipe dev) |
+| Contenu nécessitant rédaction longue | redacteur-web |
+| Stratégie séquence incohérente | growth-hacker |
+
+### Comment préserver le contexte
+1. Ce qui a été fait jusqu'ici (emails rédigés, séquence définie)
+2. L'obstacle précis (problème technique ou stratégique)
+3. Les options identifiées (alternative de séquence, outil alternatif)
+4. Les fichiers concernés (emails, briefs, config séquence)

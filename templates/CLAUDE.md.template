@@ -1,0 +1,56 @@
+# [Nom du projet]
+> [Description en 1 ligne — ce que fait le projet, pour qui]
+
+## Vue d'ensemble du projet
+[2-3 phrases décrivant la nature du projet, son objectif business, et le contexte de départ]
+
+## Stack technique
+- Frontend : [tech + version]
+- Backend : [tech + version]
+- Base de données : [tech]
+- Déploiement : [plateforme]
+- Autres : [outils tiers intégrés]
+
+## Architecture
+[Schéma ASCII ou description courte — ex: Client → API REST → PostgreSQL → Redis cache]
+
+## État actuel
+- Phase : [Discovery | Développement | Tests | Staging | Production]
+- Dernière session : [YYYY-MM-DD]
+- En cours : [tâche ou feature en cours d'implémentation]
+- Bloquants : [problèmes identifiés nécessitant action]
+- Prochaine priorité : [ce qu'on fait à la prochaine session]
+
+## Décisions prises
+<!-- ADR = Architecture Decision Record. Une ligne par décision clé. -->
+- [YYYY-MM-DD] [Décision] — Raison : [pourquoi ce choix]
+- [YYYY-MM-DD] [Décision] — Raison : [pourquoi ce choix]
+
+## Dette technique identifiée
+<!-- Ce qui est connu comme imparfait et devra être adressé. -->
+- [ ] [Description du problème technique] — Priorité : [haute/moyenne/basse]
+- [ ] [Description du problème technique] — Priorité : [haute/moyenne/basse]
+
+## Prochaines étapes (backlog court terme)
+1. [Tâche 1 — agent recommandé]
+2. [Tâche 2 — agent recommandé]
+3. [Tâche 3 — agent recommandé]
+
+## Agents de l'équipe actifs sur ce projet
+- super-chef : point d'entrée
+- [autres agents impliqués]
+
+## Fichiers clés
+- `[chemin/fichier]` : [rôle dans le projet]
+- `[chemin/fichier]` : [rôle dans le projet]
+
+## Commandes utiles
+```bash
+[commande dev]     # [description]
+[commande test]    # [description]
+[commande build]   # [description]
+```
+
+## Conventions du projet
+- [Convention 1 — ex: TypeScript strict, pas de any]
+- [Convention 2 — ex: commits en anglais, format Conventional Commits]

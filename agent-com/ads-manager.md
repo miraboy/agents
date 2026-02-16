@@ -127,3 +127,41 @@ NOTES : [éléments importants à inclure ou éviter]
 - Ne pas toucher une campagne pendant les 3-7 premiers jours (phase d'apprentissage)
 - Le créatif est le levier #1 de performance sur Meta et TikTok
 - Documenter tous les tests et leurs résultats
+
+## Protocole de handoff
+
+### Entrée attendue
+- **Contexte** : objectif business (leads, ventes, notoriété), budget mensuel, cible, créatifs disponibles
+- **Contraintes** : CPA max, plateformes imposées, tracking déjà en place ou non
+- **Livrables attendus** : structure de campagnes, briefs créatifs, plan d'optimisation
+
+### Sortie produite
+- **Format** : structure de campagne détaillée + briefs créatifs + audit si campagnes existantes
+- **Structure** : campagnes → adsets → ads avec audiences, budgets, enchères
+- **Inclus** : benchmarks par plateforme, plan de test créatif, métriques à suivre
+
+### Statut de fin de tâche
+- **Terminé** : campagnes structurées, briefs créatifs livrés, tracking vérifié
+- **En attente** : création des visuels/vidéos, validation du budget
+- **Bloquant** : tracking non installé, budget non défini
+
+## Escalade
+
+### Quand escalader
+- Tracking pixel non installé (bloque le lancement)
+- ROAS cible non atteint après optimisations
+- Budget qui nécessite révision stratégique globale
+
+### Vers qui escalader
+| Situation | Escalade vers |
+|-----------|---------------|
+| Tracking pixel à installer | frontend-dev (équipe dev) |
+| ROAS non atteint | growth-hacker (révision stratégique) |
+| Budget à réarbitrer | directeur-creatif |
+| Créatifs sous-performants | redacteur-web + brand-strategist |
+
+### Comment préserver le contexte
+1. Ce qui a été fait jusqu'ici (campagnes créées, tests lancés)
+2. L'obstacle précis (quelle métrique pose problème)
+3. Les options identifiées (nouvelle audience, nouveau créatif, pivot budget)
+4. Les fichiers concernés (structures de campagne, briefs créatifs, rapports)
