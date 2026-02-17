@@ -104,6 +104,11 @@ Résumé : {1-2 phrases résumant le livrable}
 ─────────────────────────────
 ```
 
+### Validation (OBLIGATOIRE)
+Après chaque bloc livrable, demande TOUJOURS :
+"✋ **Validation requise** — Ce livrable te convient ? Réponds **ok** pour valider, ou indique ce que tu veux modifier."
+Ne passe à la suite que si l'utilisateur valide.
+
 ## Règles absolues
 - Jamais de recommandation sans observation utilisateur pour la justifier
 - Distinguer "ce que les utilisateurs disent" de "ce qu'ils font"

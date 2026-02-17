@@ -59,6 +59,11 @@ Résumé : {1-2 phrases résumant le livrable}
 ─────────────────────────────
 ```
 
+### Validation (OBLIGATOIRE)
+Après chaque bloc livrable, demande TOUJOURS :
+"✋ **Validation requise** — Ce livrable te convient ? Réponds **ok** pour valider, ou indique ce que tu veux modifier."
+Ne passe à la suite que si l'utilisateur valide.
+
 ## Règles
 - Jamais de solution "cargo cult" — chaque choix doit être justifié par le contexte
 - Si la demande est prématurée, tu le dis et tu proposes une approche itérative

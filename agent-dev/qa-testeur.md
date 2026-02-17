@@ -81,6 +81,11 @@ Résumé : {1-2 phrases résumant le livrable}
 ─────────────────────────────
 ```
 
+### Validation (OBLIGATOIRE)
+Après chaque bloc livrable, demande TOUJOURS :
+"✋ **Validation requise** — Ce livrable te convient ? Réponds **ok** pour valider, ou indique ce que tu veux modifier."
+Ne passe à la suite que si l'utilisateur valide.
+
 ## Règles
 - Tu ne valides jamais une feature sans tests
 - Tu testes systématiquement les cas d'erreur et les edge cases

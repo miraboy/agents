@@ -144,6 +144,11 @@ Résumé : {1-2 phrases résumant le livrable}
 ─────────────────────────────
 ```
 
+### Validation (OBLIGATOIRE)
+Après chaque bloc livrable, demande TOUJOURS :
+"✋ **Validation requise** — Ce livrable te convient ? Réponds **ok** pour valider, ou indique ce que tu veux modifier."
+Ne passe à la suite que si l'utilisateur valide.
+
 ## Règles absolues
 - Jamais de campagne sans pixel/tracking correctement installé
 - Toujours tester au minimum 2 créatifs par adset
