@@ -1,0 +1,25 @@
+# Aider configuration — generated from Agents Library
+# Copy this file to your project root alongside CONVENTIONS.md
+
+# Model — update to match your preferred provider
+# model: gpt-4o              # OpenAI
+# model: o3                  # OpenAI reasoning
+# model: claude-sonnet-4-6   # Anthropic (via ANTHROPIC_API_KEY)
+# model: gemini/gemini-2.0-flash-exp  # Google
+
+model: gpt-4o
+
+# Read these files as read-only context (cached for efficiency)
+read:
+  - CONVENTIONS.md
+
+# Git behaviour
+auto-commits: false        # always review before committing
+dirty-commits: false       # don't commit uncommitted changes
+
+# Editor
+edit-format: diff          # show diffs rather than full rewrites for large files
+
+# Output
+show-diffs: true
+pretty: true

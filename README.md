@@ -1,26 +1,28 @@
 # Agents Library
 
-Ce dépôt contient deux équipes de sous-agents prêtes à copier dans `.claude/agents`, plus un super-chef qui coordonne les deux.
+Ce dépôt contient deux équipes de sous-agents prêtes à copier dans `.claude/agents`, plus un super-chef qui coordonne les deux. Des **adapters** permettent également d'utiliser la même expertise dans GitHub Copilot, Amazon Q Developer, Aider et Codex CLI.
 
 ## Structure
 
 ```
 super-chef.md              ← Point d'entrée unique (route vers dev ou comm)
 agents.json                ← Source de vérité centralisée (tous les agents)
-agent-dev/                 ← Équipe développement (13 agents)
+agent-dev/                 ← Équipe développement (11 agents)
 agent-com/                 ← Équipe communication & growth (11 agents)
+adapters/                  ← Prompts pour GitHub Copilot, Amazon Q, Aider, Codex CLI
 templates/                 ← Template CLAUDE.md pour le context-manager
 examples/                  ← Scénarios d'utilisation multi-agents
-scripts/                   ← Outils de maintenance (génération dashboards)
+scripts/                   ← Outils de maintenance (génération dashboards + adapters)
 ```
 
 ## Dossiers
 
 - `agent-dev/` : équipe développement (architecture, frontend, backend, QA, sécurité, data, UX, etc.)
 - `agent-com/` : équipe communication/growth (stratégie, branding, contenu, SEO, acquisition, etc.)
+- `adapters/` : fichiers de prompts adaptés pour GitHub Copilot, Amazon Q, Aider, Codex CLI
 - `templates/` : template CLAUDE.md structuré pour le context-manager
 - `examples/` : 3 scénarios concrets montrant l'orchestration multi-agents
-- `scripts/` : script de régénération des dashboards depuis `agents.json`
+- `scripts/` : scripts de régénération des dashboards et des adapters depuis `agents.json`
 
 ## Installation
 
@@ -73,3 +75,26 @@ Requiert `jq` (`apt install jq` / `brew install jq`).
 ## Template CLAUDE.md
 
 Le fichier `templates/CLAUDE.md.template` fournit un squelette structuré pour le context-manager. Il couvre : vue d'ensemble, stack, architecture, état actuel, décisions, dette technique, prochaines étapes.
+
+## Adapters — autres outils AI
+
+Le dossier `adapters/` contient des prompts prêts à l'emploi pour utiliser l'expertise des équipes dans d'autres assistants AI :
+
+| Outil | Fichiers | Installation |
+|-------|---------|-------------|
+| **GitHub Copilot** | `copilot-instructions.md` + 2 fichiers path-specific | Copier dans `.github/` |
+| **Amazon Q Developer** | `dev-team.md` + `comm-team.md` (avec IDs) | Copier dans `.amazonq/rules/` |
+| **Aider** | `CONVENTIONS.md` + `.aider.conf.yml` | Copier à la racine du projet |
+| **Codex CLI** | `system-prompt-dev/comm/full.txt` | `codex -s "$(cat ...)"` |
+
+Voir `adapters/README.md` pour les instructions détaillées.
+
+### Régénérer les adapters
+
+Après toute modification d'`agents.json` :
+
+```bash
+./scripts/generate-adapters.sh
+```
+
+Requiert `jq` (`apt install jq` / `brew install jq`).
