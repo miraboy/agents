@@ -160,6 +160,9 @@ function createContext({ TARGET, PKG_ROOT, DRY_RUN = false, FORCE = false }) {
   const GITIGNORE_MARKER_END   = '# agents-library [end]';
 
   const GITIGNORE_BLOCK = `${GITIGNORE_MARKER_START}
+# agents-library manifest
+.agents-library.json
+
 # Claude Code sub-agents
 .claude/agents/
 

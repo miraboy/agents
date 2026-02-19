@@ -26,24 +26,20 @@ scripts/                   ← Outils de maintenance (génération dashboards + 
 
 ## Installation
 
-**Installation globale** — rend les commandes disponibles partout :
-
-```bash
-npm install -g github:miraboy/agents
-```
-
-Puis depuis chaque projet où vous voulez installer les agents :
-
-```bash
-cd mon-projet
-agents-install
-```
-
-**Ou via npx** — sans installation permanente :
+**Via npx** — recommandé, aucune installation ni problème de PATH :
 
 ```bash
 npx github:miraboy/agents
 ```
+
+**Installation globale** — pour avoir `agents-install` disponible en permanence :
+
+```bash
+npm install -g github:miraboy/agents
+agents-install
+```
+
+> Si la commande `agents-install` est introuvable après l'install globale, voir la section [Prérequis](#prérequis--permissions-npm-linux--macos) ci-dessous.
 
 Le script copie tous les fichiers agents dans les destinations appropriées, crée les dossiers manquants et ajoute un bloc dans `.gitignore` pour que les configs restent locales.
 
