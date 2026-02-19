@@ -26,44 +26,13 @@ scripts/                   ← Outils de maintenance (génération dashboards + 
 
 ## Installation
 
-**Via npx** — recommandé, aucune installation ni problème de PATH :
+Depuis la racine de votre projet :
 
 ```bash
 npx github:miraboy/agents
 ```
 
-**Installation globale** — pour avoir `agents-install` disponible en permanence :
-
-```bash
-npm install -g github:miraboy/agents
-agents-install
-```
-
-> Si la commande `agents-install` est introuvable après l'install globale, voir la section [Prérequis](#prérequis--permissions-npm-linux--macos) ci-dessous.
-
-Le script copie tous les fichiers agents dans les destinations appropriées, crée les dossiers manquants et ajoute un bloc dans `.gitignore` pour que les configs restent locales.
-
-### Prérequis — permissions npm (Linux / macOS)
-
-Si l'install globale échoue avec une erreur de permissions (`EACCES`), configurez npm pour utiliser un dossier dans votre home :
-
-**Bash (`~/.bashrc`) :**
-```bash
-mkdir -p ~/.npm-global
-npm config set prefix '~/.npm-global'
-echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-**Zsh (`~/.zshrc`) :**
-```bash
-mkdir -p ~/.npm-global
-npm config set prefix '~/.npm-global'
-echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-> Si vous utilisez **nvm**, ce problème ne se pose pas — nvm gère déjà les permissions globales sans `sudo`.
+Le script copie tous les fichiers agents dans les destinations appropriées, crée les dossiers manquants et ajoute un bloc dans le **gitignore global** (`~/.gitignore_global`) pour que les configs restent invisibles à git sur tout le système, sans polluer le `.gitignore` de votre projet.
 
 ### Commandes disponibles
 
