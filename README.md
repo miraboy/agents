@@ -35,10 +35,12 @@ npm install github:miraboy/agents
 **Installation globale** — rend les commandes disponibles partout, puis à lancer depuis chaque projet :
 
 ```bash
-npm install -g github:miraboy/agents
+npm install -g --ignore-scripts github:miraboy/agents
 cd mon-projet
 agents-install
 ```
+
+> `--ignore-scripts` est nécessaire pour éviter une erreur de spawn shell lors de l'install globale. Le postinstall n'est de toute façon pas utile en mode global.
 
 **Ou via npx** — sans installation permanente :
 
@@ -47,6 +49,28 @@ npx github:miraboy/agents
 ```
 
 Le script copie tous les fichiers agents dans les destinations appropriées, crée les dossiers manquants et ajoute un bloc dans `.gitignore` pour que les configs restent locales.
+
+### Prérequis — permissions npm (Linux / macOS)
+
+Si l'install globale échoue avec une erreur de permissions (`EACCES`), configurez npm pour utiliser un dossier dans votre home :
+
+**Bash (`~/.bashrc`) :**
+```bash
+mkdir -p ~/.npm-global
+npm config set prefix '~/.npm-global'
+echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**Zsh (`~/.zshrc`) :**
+```bash
+mkdir -p ~/.npm-global
+npm config set prefix '~/.npm-global'
+echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+> Si vous utilisez **nvm**, ce problème ne se pose pas — nvm gère déjà les permissions globales sans `sudo`.
 
 ### Commandes disponibles
 
