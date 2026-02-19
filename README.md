@@ -26,26 +26,49 @@ scripts/                   ← Outils de maintenance (génération dashboards + 
 
 ## Installation
 
-### Installer l'équipe dev
+### Via npm (recommandé)
+
+**Installation locale** — s'installe automatiquement via le `postinstall` :
 
 ```bash
-mkdir -p .claude/agents
-cp agent-dev/*.md .claude/agents/
+npm install agents-library
 ```
 
-### Installer l'équipe comm
+**Installation globale** — rend les commandes disponibles partout, puis à lancer depuis chaque projet :
 
 ```bash
-mkdir -p .claude/agents
-cp agent-com/*.md .claude/agents/
+npm install -g agents-library
+cd mon-projet
+agents-install
 ```
 
-### Installer les deux équipes + super-chef
+Le script copie tous les fichiers agents dans les destinations appropriées, crée les dossiers manquants et ajoute un bloc dans `.gitignore` pour que les configs restent locales.
+
+### Commandes disponibles
 
 ```bash
-mkdir -p .claude/agents
-cp agent-dev/*.md agent-com/*.md super-chef.md .claude/agents/
+agents-install              # installe tout (équipes dev + comm + super-chef + adapters)
+agents-install --force      # écrase les fichiers existants
+agents-install --dry-run    # prévisualise sans écrire
+agents-install --target <dir>  # installe dans un dossier spécifique
+
+agents-uninstall            # supprime tous les fichiers installés + nettoie .gitignore
+agents-uninstall --dry-run  # prévisualise sans supprimer
 ```
+
+### Ce qui est installé
+
+| Destination | Contenu |
+|---|---|
+| `.claude/agents/` | `super-chef.md` + tous les agents dev & comm |
+| `.github/copilot-instructions.md` | Instructions GitHub Copilot |
+| `.github/instructions/` | Instructions Copilot par équipe |
+| `.amazonq/rules/` | Règles Amazon Q Developer |
+| `.codex/` | System prompts OpenAI Codex CLI |
+| `CONVENTIONS.md` + `.aider.conf.yml` | Config Aider |
+
+> Les dossiers sont créés automatiquement s'ils n'existent pas.
+> Un bloc `# agents-library [start/end]` est ajouté dans `.gitignore` pour que ces fichiers restent locaux à chaque développeur.
 
 ## agents.json
 
@@ -78,16 +101,16 @@ Le fichier `templates/CLAUDE.md.template` fournit un squelette structuré pour l
 
 ## Adapters — autres outils AI
 
-Le dossier `adapters/` contient des prompts prêts à l'emploi pour utiliser l'expertise des équipes dans d'autres assistants AI :
+Le dossier `adapters/` contient des prompts prêts à l'emploi pour utiliser l'expertise des équipes dans d'autres assistants AI. Ils sont installés automatiquement par `agents-install`.
 
-| Outil | Fichiers | Installation |
-|-------|---------|-------------|
-| **GitHub Copilot** | `copilot-instructions.md` + 2 fichiers path-specific | Copier dans `.github/` |
-| **Amazon Q Developer** | `dev-team.md` + `comm-team.md` (avec IDs) | Copier dans `.amazonq/rules/` |
-| **Aider** | `CONVENTIONS.md` + `.aider.conf.yml` | Copier à la racine du projet |
-| **Codex CLI** | `system-prompt-dev/comm/full.txt` | `codex -s "$(cat ...)"` |
+| Outil | Destination | Fichiers |
+|-------|-------------|---------|
+| **GitHub Copilot** | `.github/` | `copilot-instructions.md` + 2 instructions par équipe |
+| **Amazon Q Developer** | `.amazonq/rules/` | `dev-team.md` + `comm-team.md` |
+| **Aider** | `./` | `CONVENTIONS.md` + `.aider.conf.yml` |
+| **Codex CLI** | `.codex/` | `system-prompt-dev/comm/full.txt` |
 
-Voir `adapters/README.md` pour les instructions détaillées.
+Voir `adapters/README.md` pour les instructions détaillées par outil.
 
 ### Régénérer les adapters
 

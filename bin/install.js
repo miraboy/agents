@@ -4,28 +4,30 @@
  * agents-install — Copies agent prompts & config files to all supported tools.
  *
  * Destinations:
- *   .claude/agents/      ← Claude Code (all agent .md files)
- *   .github/             ← GitHub Copilot (copilot-instructions.md)
- *   .github/instructions/← GitHub Copilot (scoped instructions)
- *   .amazonq/rules/      ← Amazon Q Developer
- *   ./                   ← Aider (CONVENTIONS.md + .aider.conf.yml)
- *   .codex/              ← OpenAI Codex CLI (system prompts)
+ *   .claude/agents/       ← Claude Code (all agent .md files)
+ *   .github/              ← GitHub Copilot (copilot-instructions.md)
+ *   .github/instructions/ ← GitHub Copilot (scoped instructions)
+ *   .amazonq/rules/       ← Amazon Q Developer
+ *   ./                    ← Aider (CONVENTIONS.md + .aider.conf.yml)
+ *   .codex/               ← OpenAI Codex CLI (system prompts)
  *
  * Usage:
- *   npx agents-library                  (install everything)
- *   npx agents-library --force          (overwrite existing files)
+ *   npx agents-library                  (install everything, prompt on conflicts)
+ *   npx agents-library --force          (overwrite all without prompting)
  *   npx agents-library --dry-run        (preview without writing)
  *   npx agents-library --target <dir>   (install into a specific directory)
  */
 
-const fs = require('fs');
+'use strict';
+
 const path = require('path');
+const { createContext, MANIFEST_FILE, RESET, GREEN, YELLOW, RED, CYAN, BOLD, DIM } = require('./_lib');
 
 // ---------------------------------------------------------------------------
 // CLI args
 // ---------------------------------------------------------------------------
 
-const args = process.argv.slice(2);
+const args      = process.argv.slice(2);
 const FORCE     = args.includes('--force');
 const DRY_RUN   = args.includes('--dry-run');
 const targetIdx = args.indexOf('--target');
@@ -33,223 +35,121 @@ const TARGET    = targetIdx !== -1 ? path.resolve(args[targetIdx + 1]) : process
 const PKG_ROOT  = path.resolve(__dirname, '..');
 
 // Skip when running inside the package's own directory (e.g. during development).
-if (path.resolve(TARGET) === path.resolve(PKG_ROOT)) {
+if (path.resolve(TARGET) === path.resolve(PKG_ROOT)) process.exit(0);
+
+// Skip postinstall during global install — user must run `agents-install` manually.
+if (process.env.npm_config_global === 'true') {
+  console.log();
+  console.log('  agents-library installed globally.');
+  console.log(`  Run \x1b[36magents-install\x1b[0m from your project directory to install agent configs.`);
+  console.log();
   process.exit(0);
 }
 
 // ---------------------------------------------------------------------------
-// Helpers
+// Main
 // ---------------------------------------------------------------------------
 
-const RESET  = '\x1b[0m';
-const GREEN  = '\x1b[32m';
-const YELLOW = '\x1b[33m';
-const RED    = '\x1b[31m';
-const CYAN   = '\x1b[36m';
-const BOLD   = '\x1b[1m';
-const DIM    = '\x1b[2m';
+async function main() {
+  const ctx = createContext({ TARGET, PKG_ROOT, DRY_RUN, FORCE });
+  const { log, ensureDir, hashFile, buildInstallMap, updateGitignore, writeManifest, copyFile,
+          IS_INTERACTIVE, closeReadline } = ctx;
 
-function log(symbol, color, msg) {
-  console.log(`  ${color}${symbol}${RESET} ${msg}`);
-}
+  const PKG_VERSION = require('../package.json').version;
 
-function ensureDir(dir) {
-  if (!DRY_RUN && !fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-}
+  console.log();
+  console.log(`${BOLD}${CYAN}agents-install${RESET} — AI agent prompts for all tools`);
+  if (DRY_RUN)         console.log(`${YELLOW}  (dry run — no files will be written)${RESET}`);
+  if (!IS_INTERACTIVE) console.log(`${DIM}  (non-interactive — conflicts will be skipped)${RESET}`);
+  console.log(`  Target  : ${DIM}${TARGET}${RESET}`);
+  console.log(`  Source  : ${DIM}${PKG_ROOT}${RESET}`);
+  console.log(`  Version : ${DIM}${PKG_VERSION}${RESET}`);
+  console.log();
 
-/**
- * Copy a single file from src to dest.
- * Returns 'copied' | 'skipped' | 'overwritten' | 'dry'
- */
-function copyFile(src, dest) {
-  if (!fs.existsSync(src)) {
-    return 'missing';
-  }
+  // Always create destination directories.
+  ensureDir(path.join(TARGET, '.claude',  'agents'));
+  ensureDir(path.join(TARGET, '.github',  'instructions'));
+  ensureDir(path.join(TARGET, '.amazonq', 'rules'));
+  ensureDir(path.join(TARGET, '.codex'));
 
-  const exists = fs.existsSync(dest);
+  const installMap   = buildInstallMap();
+  const fileHashes   = {};
 
-  if (DRY_RUN) {
-    return exists ? 'would-overwrite' : 'would-copy';
-  }
+  let totalInstalled = 0;
+  let totalSkipped   = 0;
+  let totalMissing   = 0;
 
-  if (exists && !FORCE) {
-    return 'skipped';
-  }
+  for (const section of installMap) {
+    console.log(`${BOLD}${section.label}${RESET}`);
 
-  ensureDir(path.dirname(dest));
-  fs.copyFileSync(src, dest);
-  return exists ? 'overwritten' : 'copied';
-}
+    for (const { src, dest } of section.files) {
+      const relDest = path.relative(TARGET, dest);
+      const result  = await copyFile(src, dest);
 
-/** Get all .md files from a source directory (non-recursive). */
-function getMdFiles(dir) {
-  if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir)
-    .filter(f => f.endsWith('.md'))
-    .map(f => path.join(dir, f));
-}
+      switch (result) {
+        case 'copied':
+        case 'would-copy':
+          log('✓', GREEN, relDest);
+          totalInstalled++;
+          break;
+        case 'up-to-date':
+        case 'would-overwrite':
+          log('=', DIM, `${relDest}  ${DIM}(already up to date)${RESET}`);
+          totalInstalled++;
+          break;
+        case 'overwritten':
+          log('↺', YELLOW, `${relDest}  ${DIM}(overwritten)${RESET}`);
+          totalInstalled++;
+          break;
+        case 'appended':
+          log('+', CYAN, `${relDest}  ${DIM}(appended)${RESET}`);
+          totalInstalled++;
+          break;
+        case 'backed-up':
+          log('↺', CYAN, `${relDest}  ${DIM}(old saved as .bak)${RESET}`);
+          totalInstalled++;
+          break;
+        case 'would-conflict':
+          log('!', YELLOW, `${relDest}  ${DIM}(modified — would prompt)${RESET}`);
+          totalSkipped++;
+          break;
+        case 'skipped':
+          log('–', DIM, `${relDest}  ${DIM}(skipped)${RESET}`);
+          totalSkipped++;
+          break;
+        case 'missing':
+          log('✗', RED, `${relDest}  ${DIM}(source not found: ${src})${RESET}`);
+          totalMissing++;
+          break;
+      }
 
-// ---------------------------------------------------------------------------
-// Install map — { label, files: [{ src, dest }] }
-// ---------------------------------------------------------------------------
-
-function buildInstallMap() {
-  const map = [];
-
-  // ── Claude Code ──────────────────────────────────────────────────────────
-  const claudeAgentsDir = path.join(TARGET, '.claude', 'agents');
-  const claudeFiles = [
-    path.join(PKG_ROOT, 'super-chef.md'),
-    ...getMdFiles(path.join(PKG_ROOT, 'agent-dev')),
-    ...getMdFiles(path.join(PKG_ROOT, 'agent-com')),
-  ];
-
-  map.push({
-    label: 'Claude Code (.claude/agents/)',
-    files: claudeFiles.map(src => ({
-      src,
-      dest: path.join(claudeAgentsDir, path.basename(src)),
-    })),
-  });
-
-  // ── GitHub Copilot ────────────────────────────────────────────────────────
-  map.push({
-    label: 'GitHub Copilot (.github/)',
-    files: [
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'github-copilot', 'copilot-instructions.md'),
-        dest: path.join(TARGET, '.github', 'copilot-instructions.md'),
-      },
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'github-copilot', 'instructions', 'dev-team.instructions.md'),
-        dest: path.join(TARGET, '.github', 'instructions', 'dev-team.instructions.md'),
-      },
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'github-copilot', 'instructions', 'comm-team.instructions.md'),
-        dest: path.join(TARGET, '.github', 'instructions', 'comm-team.instructions.md'),
-      },
-    ],
-  });
-
-  // ── Amazon Q ─────────────────────────────────────────────────────────────
-  map.push({
-    label: 'Amazon Q Developer (.amazonq/rules/)',
-    files: [
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'amazon-q', 'rules', 'dev-team.md'),
-        dest: path.join(TARGET, '.amazonq', 'rules', 'dev-team.md'),
-      },
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'amazon-q', 'rules', 'comm-team.md'),
-        dest: path.join(TARGET, '.amazonq', 'rules', 'comm-team.md'),
-      },
-    ],
-  });
-
-  // ── Aider ─────────────────────────────────────────────────────────────────
-  map.push({
-    label: 'Aider (./)',
-    files: [
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'aider', 'CONVENTIONS.md'),
-        dest: path.join(TARGET, 'CONVENTIONS.md'),
-      },
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'aider', '.aider.conf.yml'),
-        dest: path.join(TARGET, '.aider.conf.yml'),
-      },
-    ],
-  });
-
-  // ── OpenAI Codex CLI ──────────────────────────────────────────────────────
-  map.push({
-    label: 'OpenAI Codex (.codex/)',
-    files: [
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'codex', 'system-prompt-dev.txt'),
-        dest: path.join(TARGET, '.codex', 'system-prompt-dev.txt'),
-      },
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'codex', 'system-prompt-comm.txt'),
-        dest: path.join(TARGET, '.codex', 'system-prompt-comm.txt'),
-      },
-      {
-        src:  path.join(PKG_ROOT, 'adapters', 'codex', 'system-prompt-full.txt'),
-        dest: path.join(TARGET, '.codex', 'system-prompt-full.txt'),
-      },
-    ],
-  });
-
-  return map;
-}
-
-// ---------------------------------------------------------------------------
-// Run
-// ---------------------------------------------------------------------------
-
-console.log();
-console.log(`${BOLD}${CYAN}agents-install${RESET} — AI agent prompts for all tools`);
-if (DRY_RUN) console.log(`${YELLOW}  (dry run — no files will be written)${RESET}`);
-console.log(`  Target : ${DIM}${TARGET}${RESET}`);
-console.log(`  Source : ${DIM}${PKG_ROOT}${RESET}`);
-console.log();
-
-const installMap = buildInstallMap();
-
-// Always create destination directories so each tool can discover its config.
-ensureDir(path.join(TARGET, '.claude',   'agents'));         // Claude Code
-ensureDir(path.join(TARGET, '.github',   'instructions'));   // GitHub Copilot
-ensureDir(path.join(TARGET, '.amazonq',  'rules'));          // Amazon Q
-ensureDir(path.join(TARGET, '.codex'));                      // OpenAI Codex
-
-let totalCopied = 0;
-let totalSkipped = 0;
-let totalMissing = 0;
-
-for (const section of installMap) {
-  console.log(`${BOLD}${section.label}${RESET}`);
-
-  for (const { src, dest } of section.files) {
-    const relDest = path.relative(TARGET, dest);
-    const result  = copyFile(src, dest);
-
-    switch (result) {
-      case 'copied':
-      case 'would-copy':
-        log('✓', GREEN, relDest);
-        totalCopied++;
-        break;
-      case 'overwritten':
-      case 'would-overwrite':
-        log('↺', YELLOW, `${relDest}  ${DIM}(overwritten)${RESET}`);
-        totalCopied++;
-        break;
-      case 'skipped':
-        log('–', DIM, `${relDest}  ${DIM}(already exists — use --force to overwrite)${RESET}`);
-        totalSkipped++;
-        break;
-      case 'missing':
-        log('✗', RED, `${relDest}  ${DIM}(source not found: ${src})${RESET}`);
-        totalMissing++;
-        break;
+      // Record hash of the installed file for future update comparisons.
+      const h = hashFile(dest);
+      if (h) fileHashes[relDest] = h;
     }
+
+    console.log();
   }
 
+  // ── .gitignore ─────────────────────────────────────────────────────────────
+  console.log(`${BOLD}.gitignore${RESET}`);
+  updateGitignore();
   console.log();
+
+  // ── Manifest ───────────────────────────────────────────────────────────────
+  writeManifest(PKG_VERSION, fileHashes);
+  if (!DRY_RUN) log('✓', DIM, `${MANIFEST_FILE}  ${DIM}(manifest written)${RESET}`);
+  console.log();
+
+  // ── Summary ────────────────────────────────────────────────────────────────
+  console.log(`${BOLD}Summary${RESET}`);
+  if (totalInstalled > 0) log('✓', GREEN,  `${totalInstalled} file(s) ${DRY_RUN ? 'to install' : 'installed'}`);
+  if (totalSkipped   > 0) log('–', DIM,    `${totalSkipped} file(s) skipped`);
+  if (totalMissing   > 0) log('✗', RED,    `${totalMissing} file(s) not found in package`);
+  if (!DRY_RUN)           log('i', CYAN,   `run ${BOLD}agents-update${RESET}${CYAN} to pull new versions later`);
+  console.log();
+
+  closeReadline();
 }
 
-// ── Summary ──────────────────────────────────────────────────────────────────
-
-console.log(`${BOLD}Summary${RESET}`);
-if (totalCopied  > 0) log('✓', GREEN,  `${totalCopied} file(s) ${DRY_RUN ? 'to copy' : 'copied'}`);
-if (totalSkipped > 0) log('–', DIM,    `${totalSkipped} file(s) skipped (already exist)`);
-if (totalMissing > 0) log('✗', RED,    `${totalMissing} file(s) not found in package`);
-
-if (!DRY_RUN && totalSkipped > 0) {
-  console.log();
-  console.log(`  ${DIM}Tip: run with --force to overwrite existing files.${RESET}`);
-}
-
-console.log();
+main().catch(err => { console.error(err); process.exit(1); });

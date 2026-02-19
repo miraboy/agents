@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Multi-team AI agent framework — installs prompts for Claude, Copilot, Amazon Q, Aider and Codex",
   "bin": {
-    "agents-library": "./bin/install.js",
-    "agents-install": "./bin/install.js"
+    "agents-library":   "./bin/install.js",
+    "agents-install":   "./bin/install.js",
+    "agents-update":    "./bin/update.js",
+    "agents-uninstall": "./bin/uninstall.js"
   },
   "files": [
     "bin/",
@@ -15,8 +17,10 @@
     "templates/"
   ],
   "scripts": {
-    "postinstall": "node bin/install.js",
-    "install-local": "node bin/install.js"
+    "postinstall":     "node bin/install.js",
+    "install-local":   "node bin/install.js",
+    "update-local":    "node bin/update.js",
+    "uninstall-local": "node bin/uninstall.js"
   },
   "keywords": ["claude", "agents", "copilot", "amazon-q", "aider", "codex", "ai"],
   "license": "MIT",
