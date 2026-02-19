@@ -198,6 +198,12 @@ console.log();
 
 const installMap = buildInstallMap();
 
+// Always create destination directories so each tool can discover its config.
+ensureDir(path.join(TARGET, '.claude',   'agents'));         // Claude Code
+ensureDir(path.join(TARGET, '.github',   'instructions'));   // GitHub Copilot
+ensureDir(path.join(TARGET, '.amazonq',  'rules'));          // Amazon Q
+ensureDir(path.join(TARGET, '.codex'));                      // OpenAI Codex
+
 let totalCopied = 0;
 let totalSkipped = 0;
 let totalMissing = 0;
