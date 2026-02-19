@@ -17,7 +17,6 @@
     "templates/"
   ],
   "scripts": {
-    "postinstall":     "node bin/install.js",
     "install-local":   "node bin/install.js",
     "update-local":    "node bin/update.js",
     "uninstall-local": "node bin/uninstall.js"

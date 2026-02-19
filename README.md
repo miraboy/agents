@@ -26,21 +26,18 @@ scripts/                   ← Outils de maintenance (génération dashboards + 
 
 ## Installation
 
-**Installation locale** — s'installe automatiquement via le `postinstall` :
+**Installation globale** — rend les commandes disponibles partout :
 
 ```bash
-npm install github:miraboy/agents
+npm install -g github:miraboy/agents
 ```
 
-**Installation globale** — rend les commandes disponibles partout, puis à lancer depuis chaque projet :
+Puis depuis chaque projet où vous voulez installer les agents :
 
 ```bash
-npm install -g --ignore-scripts github:miraboy/agents
 cd mon-projet
 agents-install
 ```
-
-> `--ignore-scripts` est nécessaire pour éviter une erreur de spawn shell lors de l'install globale. Le postinstall n'est de toute façon pas utile en mode global.
 
 **Ou via npx** — sans installation permanente :
 
