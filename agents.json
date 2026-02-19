@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated": "2026-02-16",
+  "updated": "2026-02-19",
   "teams": {
     "root": {
       "label": "Super-Chef (point d'entrée unique)",
@@ -212,6 +212,20 @@
           "description": "Recherche utilisateurs, tests d'utilisabilité, évaluation heuristique, parcours utilisateur. Valide les interfaces avant et après développement.",
           "escalationTargets": ["product-thinker", "frontend-dev", "chef-equipe"],
           "skills": ["Tests utilisateurs", "Heuristiques de Nielsen", "User journey", "Personas", "Accessibilité"]
+        },
+        {
+          "id": "mobile-dev",
+          "team": "dev",
+          "model": "claude-sonnet-4-5-20250929",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+          "icon": "📱",
+          "color": "#06d6a0",
+          "role": "Mobile",
+          "title": "Développeur Mobile Cross-Platform",
+          "description": "Développe des applications iOS et Android depuis une base de code unique. React Native, Expo, Flutter. EAS Build, publication stores, offline-first.",
+          "escalationTargets": ["architecte", "backend-dev", "devops", "chef-equipe"],
+          "skills": ["React Native", "Expo / EAS", "Flutter / Dart", "Offline-first", "App Store / Play Store"]
         }
       ]
     },
