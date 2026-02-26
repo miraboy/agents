@@ -133,12 +133,14 @@ function createContext({ TARGET, PKG_ROOT, DRY_RUN = false, FORCE = false }) {
     });
 
     // OpenAI Codex
+    // AGENTS.md → project root (Codex walks the directory tree looking for AGENTS.md)
+    // config.toml → .codex/ (Codex reads .codex/config.toml from the project)
     map.push({
-      label: 'OpenAI Codex (.codex/)',
+      label: 'OpenAI Codex (AGENTS.md + .codex/)',
       files: [
         {
           src:  path.join(PKG_ROOT, 'adapters', 'codex', 'AGENTS.md'),
-          dest: path.join(TARGET, '.codex', 'AGENTS.md'),
+          dest: path.join(TARGET, 'AGENTS.md'),
         },
         {
           src:  path.join(PKG_ROOT, 'adapters', 'codex', 'config.toml'),
@@ -170,6 +172,7 @@ function createContext({ TARGET, PKG_ROOT, DRY_RUN = false, FORCE = false }) {
 .amazonq/
 
 # OpenAI Codex CLI
+AGENTS.md
 .codex/
 
 # Aider

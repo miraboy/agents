@@ -26,10 +26,6 @@
 model = "o4-mini"
 model_reasoning_effort = "medium"
 
-# Indique à Codex de lire AGENTS.md depuis .codex/ (où agents-install le place)
-# Sans cette ligne, Codex cherche AGENTS.md à la racine du projet uniquement.
-project_doc_fallback_filenames = [".codex/AGENTS.md"]
-
 # Décommenter pour activer le mode multi-agent (expérimental)
 # multi_agent = true
 
