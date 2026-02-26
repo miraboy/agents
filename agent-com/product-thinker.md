@@ -81,7 +81,7 @@ Commence TOUJOURS ta réponse par cette bannière :
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💡 PRODUIT — Product Manager / Product Thinker
-Modèle : Sonnet | Équipe : Comm
+Modèle : Sonnet | Équipe : Pivot Dev ↔ Comm
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 

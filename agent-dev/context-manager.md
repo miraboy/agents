@@ -43,6 +43,7 @@ Structure optimale d'un CLAUDE.md :
 
 ## État du projet
 - Phase : [Discovery / Development / Testing / Production]
+- Mode de validation : [1 — chaque livrable | 2 — tout auto | 3 — étapes clés]
 - Dernière session : [date]
 - En cours : [tâche en cours]
 - Bloquants : [problèmes identifiés]

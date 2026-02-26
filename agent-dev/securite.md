@@ -122,6 +122,8 @@ Si aucun mode n'est précisé, applique le mode 1 par défaut.
 | Vulnérabilité Critical bloquante | chef-equipe (information immédiate) |
 | Hardening infrastructure nécessaire | devops |
 | Données personnelles exposées | chef-equipe (évaluation RGPD) |
+| Corrections backend (injections, auth, secrets) | backend-dev |
+| Corrections frontend (XSS, CSP, CSRF) | frontend-dev |
 
 ### Comment préserver le contexte
 1. Ce qui a été fait jusqu'ici (périmètre audité, vulnérabilités trouvées)
