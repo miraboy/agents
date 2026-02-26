@@ -184,15 +184,28 @@ ${GITIGNORE_MARKER_END}`;
     const gitignorePath = path.join(TARGET, '.gitignore');
 
     if (DRY_RUN) {
-      log('✓', GREEN, `.gitignore  ${DIM}(would add agents-library block)${RESET}`);
+      log('✓', GREEN, `.gitignore  ${DIM}(would update agents-library block)${RESET}`);
       return;
     }
 
     const current = fs.existsSync(gitignorePath) ? fs.readFileSync(gitignorePath, 'utf8') : '';
 
     if (current.includes(GITIGNORE_MARKER_START)) {
-      log('–', DIM, `.gitignore  ${DIM}(block already present)${RESET}`);
-      return;
+      // Replace existing block so new entries (e.g. AGENTS.md) are always up to date.
+      const startIdx = current.indexOf(GITIGNORE_MARKER_START);
+      const endIdx   = current.indexOf(GITIGNORE_MARKER_END);
+      if (endIdx !== -1) {
+        const before = current.slice(0, startIdx);
+        const after  = current.slice(endIdx + GITIGNORE_MARKER_END.length);
+        const updated = before + GITIGNORE_BLOCK + after;
+        if (updated === current) {
+          log('–', DIM, `.gitignore  ${DIM}(block already up to date)${RESET}`);
+        } else {
+          fs.writeFileSync(gitignorePath, updated, 'utf8');
+          log('✓', GREEN, `.gitignore  ${DIM}(block updated)${RESET}`);
+        }
+        return;
+      }
     }
 
     const separator = current.length > 0 && !current.endsWith('\n') ? '\n' : '';
