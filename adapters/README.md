@@ -90,29 +90,61 @@ being editable by it. Update it manually when project conventions change.
 **Files:**
 ```
 codex/
-├── system-prompt-dev.txt    ← dev team expertise + conventions
-├── system-prompt-comm.txt   ← comm team expertise + frameworks
-└── system-prompt-full.txt   ← super-chef mode (dev + comm + routing)
+├── AGENTS.md      ← instructions lues automatiquement par Codex (super-chef + équipes)
+└── config.toml    ← définition des 25 rôles agents avec modèles OpenAI
 ```
 
-**Usage:**
+**Install:**
 ```bash
-# Dev session
-codex -s "$(cat path/to/system-prompt-dev.txt)" "your request here"
-
-# Comm session
-codex -s "$(cat path/to/system-prompt-comm.txt)" "your request here"
-
-# Full super-chef mode (routes between dev and comm)
-codex -s "$(cat path/to/system-prompt-full.txt)" "your request here"
+mkdir -p .codex
+cp codex/AGENTS.md .codex/
+cp codex/config.toml .codex/
 ```
 
-Or set as a shell alias in your `.zshrc` / `.bashrc`:
+Codex lit automatiquement `.codex/AGENTS.md` au démarrage de chaque session —
+aucune configuration supplémentaire requise.
+
+**Usage des rôles agents (multi-agent) :**
 ```bash
-alias adev='codex -s "$(cat ~/agents/adapters/codex/system-prompt-dev.txt)"'
-alias acomm='codex -s "$(cat ~/agents/adapters/codex/system-prompt-comm.txt)"'
-alias achef='codex -s "$(cat ~/agents/adapters/codex/system-prompt-full.txt)"'
+# Démarrer une session en mode super-chef (par défaut via AGENTS.md)
+codex "crée une API REST pour gérer des utilisateurs"
+
+# Utiliser un rôle spécifique
+codex --role backend-dev "ajoute un endpoint POST /users"
+codex --role redacteur-web "rédige la landing page pour notre SaaS"
+codex --role securite "audite ce fichier auth.ts"
 ```
+
+**Rôles disponibles dans `config.toml` :**
+
+| Rôle | Modèle | Usage |
+|------|--------|-------|
+| `super-chef` | o3 | Entrée unique, routing, coordination |
+| `chef-equipe` | o3 | Lead dev, projets tech multi-tâches |
+| `directeur-creatif` | o3 | Lead comm, campagnes multi-canaux |
+| `orchestrateur` | o3 | Décomposition et coordination dev |
+| `orchestrateur-comm` | o4-mini | Décomposition et coordination comm |
+| `architecte` | o4-mini | Architecture système, ADRs |
+| `backend-dev` | o4-mini | APIs, BDD, logique serveur |
+| `frontend-dev` | o4-mini | UI web, React, Next.js |
+| `mobile-dev` | o4-mini | React Native, Expo, Flutter |
+| `devops` | o4-mini | CI/CD, Docker, infrastructure |
+| `qa-testeur` | o4-mini | Tests automatisés, QA |
+| `securite` | o4-mini | Audit OWASP, vulnérabilités |
+| `tech-writer` | o4-mini | Documentation, READMEs |
+| `data-analyst` | o4-mini | Données, SQL, BI |
+| `ux-researcher` | o4-mini | UX, tests utilisateurs |
+| `stratege-comm` | o4-mini | Plans de comm, KPIs |
+| `product-thinker` | o4-mini | User stories, roadmap |
+| `brand-strategist` | o4-mini | Branding, messaging |
+| `redacteur-web` | o4-mini | Copywriting, landing pages |
+| `social-media-manager` | o4-mini | Réseaux sociaux, calendrier |
+| `email-marketer` | o4-mini | Email marketing, automation |
+| `growth-hacker` | o4-mini | Acquisition, conversion |
+| `ads-manager` | o4-mini | Meta/Google/TikTok Ads |
+| `seo-specialist` | o4-mini | SEO technique et éditorial |
+| `agent-maker` | o3 | Création de nouveaux agents |
+| `context-manager` | o4-mini | Mémoire de session, handoffs |
 
 ---
 

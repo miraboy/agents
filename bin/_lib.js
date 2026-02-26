@@ -137,16 +137,12 @@ function createContext({ TARGET, PKG_ROOT, DRY_RUN = false, FORCE = false }) {
       label: 'OpenAI Codex (.codex/)',
       files: [
         {
-          src:  path.join(PKG_ROOT, 'adapters', 'codex', 'system-prompt-dev.txt'),
-          dest: path.join(TARGET, '.codex', 'system-prompt-dev.txt'),
+          src:  path.join(PKG_ROOT, 'adapters', 'codex', 'AGENTS.md'),
+          dest: path.join(TARGET, '.codex', 'AGENTS.md'),
         },
         {
-          src:  path.join(PKG_ROOT, 'adapters', 'codex', 'system-prompt-comm.txt'),
-          dest: path.join(TARGET, '.codex', 'system-prompt-comm.txt'),
-        },
-        {
-          src:  path.join(PKG_ROOT, 'adapters', 'codex', 'system-prompt-full.txt'),
-          dest: path.join(TARGET, '.codex', 'system-prompt-full.txt'),
+          src:  path.join(PKG_ROOT, 'adapters', 'codex', 'config.toml'),
+          dest: path.join(TARGET, '.codex', 'config.toml'),
         },
       ],
     });
