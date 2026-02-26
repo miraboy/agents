@@ -8,7 +8,7 @@
         {
           "id": "super-chef",
           "team": "root",
-          "model": "claude-opus-4-5-20251101",
+          "model": "claude-opus-4-6",
           "modelLabel": "Opus",
           "tools": ["Read", "Write", "Edit", "Glob", "Grep", "Task"],
           "icon": "👑",
@@ -27,7 +27,7 @@
         {
           "id": "agent-maker",
           "team": "meta",
-          "model": "claude-opus-4-5-20251101",
+          "model": "claude-opus-4-6",
           "modelLabel": "Opus",
           "tools": ["Read", "Write", "Edit", "Glob", "Grep"],
           "icon": "🧬",
@@ -41,7 +41,7 @@
         {
           "id": "context-manager",
           "team": "meta",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob", "Grep", "Bash"],
           "icon": "🧠",
@@ -62,7 +62,7 @@
         {
           "id": "chef-equipe",
           "team": "dev",
-          "model": "claude-opus-4-5-20251101",
+          "model": "claude-opus-4-6",
           "modelLabel": "Opus",
           "tools": ["Read", "Write", "Edit", "Glob", "Grep", "Task"],
           "icon": "🎯",
@@ -76,7 +76,7 @@
         {
           "id": "orchestrateur",
           "team": "dev",
-          "model": "claude-opus-4-5-20251101",
+          "model": "claude-opus-4-6",
           "modelLabel": "Opus",
           "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "Task"],
           "icon": "🔀",
@@ -90,7 +90,7 @@
         {
           "id": "architecte",
           "team": "dev",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob", "Grep"],
           "icon": "🏗️",
@@ -104,7 +104,7 @@
         {
           "id": "frontend-dev",
           "team": "dev",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
           "icon": "🎨",
@@ -118,7 +118,7 @@
         {
           "id": "backend-dev",
           "team": "dev",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
           "icon": "⚡",
@@ -132,7 +132,7 @@
         {
           "id": "devops",
           "team": "dev",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
           "icon": "🚀",
@@ -160,7 +160,7 @@
         {
           "id": "securite",
           "team": "dev",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Grep", "Glob", "Bash"],
           "icon": "🔒",
@@ -188,7 +188,7 @@
         {
           "id": "data-analyst",
           "team": "dev",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
           "icon": "📊",
@@ -202,7 +202,7 @@
         {
           "id": "ux-researcher",
           "team": "dev",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob"],
           "icon": "🔍",
@@ -216,7 +216,7 @@
         {
           "id": "mobile-dev",
           "team": "dev",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
           "icon": "📱",
@@ -237,7 +237,7 @@
         {
           "id": "directeur-creatif",
           "team": "comm",
-          "model": "claude-opus-4-5-20251101",
+          "model": "claude-opus-4-6",
           "modelLabel": "Opus",
           "tools": ["Read", "Write", "Edit", "Glob", "Task"],
           "icon": "🎬",
@@ -251,7 +251,7 @@
         {
           "id": "orchestrateur-comm",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob", "Task"],
           "icon": "🔀",
@@ -265,7 +265,7 @@
         {
           "id": "stratege-comm",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob"],
           "icon": "🗺️",
@@ -279,7 +279,7 @@
         {
           "id": "product-thinker",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob", "Grep"],
           "icon": "💡",
@@ -293,7 +293,7 @@
         {
           "id": "brand-strategist",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob"],
           "icon": "💎",
@@ -307,7 +307,7 @@
         {
           "id": "redacteur-web",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob"],
           "icon": "✍️",
@@ -321,7 +321,7 @@
         {
           "id": "social-media-manager",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob"],
           "icon": "📱",
@@ -335,7 +335,7 @@
         {
           "id": "email-marketer",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob"],
           "icon": "📧",
@@ -349,7 +349,7 @@
         {
           "id": "growth-hacker",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob"],
           "icon": "📈",
@@ -363,7 +363,7 @@
         {
           "id": "ads-manager",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob"],
           "icon": "📣",
@@ -377,7 +377,7 @@
         {
           "id": "seo-specialist",
           "team": "comm",
-          "model": "claude-sonnet-4-5-20250929",
+          "model": "claude-sonnet-4-6",
           "modelLabel": "Sonnet",
           "tools": ["Read", "Write", "Edit", "Glob", "Grep"],
           "icon": "🔎",
