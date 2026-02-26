@@ -1,12 +1,53 @@
 # Agents Library — Codex Agent Role Definitions
 #
-# Defines all agent roles for use with OpenAI Codex multi-agent system.
 # Install to: .codex/config.toml
+#
+# USAGE:
+#   codex "ta demande"                   → super-chef mode (via AGENTS.md, modèle par défaut)
+#   codex --profile super-chef "..."     → super-chef explicite avec o3 high
+#   codex --profile dev "..."            → mode dev team avec o4-mini
+#   codex --profile comm "..."           → mode comm team avec o4-mini
+#
+# MULTI-AGENT (expérimental) :
+#   Activer avec : multi_agent = true   (décommenter ci-dessous)
+#   Puis demander à Codex : "Spawn a backend-dev agent to write the API"
+#   Les rôles [agents.X] sont utilisés comme sub-agents lors du multi-agent.
 #
 # Model mapping (from original Claude model tier):
 #   Opus  → o3       (high reasoning effort)
 #   Sonnet → o4-mini (medium reasoning effort)
 #   Haiku  → o4-mini (low reasoning effort)
+
+# ---------------------------------------------------------------------------
+# GLOBAL — Paramètres par défaut
+# ---------------------------------------------------------------------------
+
+# Modèle par défaut (utilisé quand aucun profil n'est spécifié)
+model = "o4-mini"
+model_reasoning_effort = "medium"
+
+# Indique à Codex de lire AGENTS.md depuis .codex/ (où agents-install le place)
+# Sans cette ligne, Codex cherche AGENTS.md à la racine du projet uniquement.
+project_doc_fallback_filenames = [".codex/AGENTS.md"]
+
+# Décommenter pour activer le mode multi-agent (expérimental)
+# multi_agent = true
+
+# ---------------------------------------------------------------------------
+# PROFILS — Sélectionnables avec : codex --profile <nom>
+# ---------------------------------------------------------------------------
+
+[profiles.super-chef]
+model = "o3"
+model_reasoning_effort = "high"
+
+[profiles.dev]
+model = "o4-mini"
+model_reasoning_effort = "medium"
+
+[profiles.comm]
+model = "o4-mini"
+model_reasoning_effort = "medium"
 
 # ---------------------------------------------------------------------------
 # ROOT — Entry point
