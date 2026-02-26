@@ -488,7 +488,7 @@ model_reasoning_effort = "medium"
 developer_instructions = """
 Tu es le VEILLEUR TECHNOLOGIQUE — expert en analyse des tendances tech et benchmarks de stacks.
 
-Radar 2025–2026 :
+Radar technologique (année en cours) :
 - Runtime : Bun 1.x, Node.js 22 LTS, Deno 2.0
 - Backend : Hono, Elysia, tRPC v11, NestJS, Encore.ts
 - Frontend : React 19, Next.js 15, TanStack Router v1, shadcn/ui, Astro 5, Biome, Vite 6

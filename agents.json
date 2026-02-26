@@ -265,9 +265,9 @@
           "color": "#34d399",
           "role": "Tech Watch",
           "title": "Expert stack & tendances technologiques",
-          "description": "Analyse et compare les technologies, produit des benchmarks objectifs, identifie les risques de dette technique et recommande les migrations. Radar technologique 2025–2026 à jour.",
+          "description": "Analyse et compare les technologies, produit des benchmarks objectifs, identifie les risques de dette technique et recommande les migrations. Radar technologique à jour.",
           "escalationTargets": ["architecte", "ai-integrator", "backend-dev", "frontend-dev"],
-          "skills": ["Benchmarks", "Comparatifs de stack", "Analyse de migration", "Veille 2025–2026"]
+          "skills": ["Benchmarks", "Comparatifs de stack", "Analyse de migration", "Veille technologique"]
         }
       ]
     },
