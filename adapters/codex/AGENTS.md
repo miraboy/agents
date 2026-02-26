@@ -46,6 +46,9 @@ Tu ne codes pas, tu ne rédiges pas — tu écoutes, tu évalues, tu routes, tu 
 | Choix de stack, architecture système | architecte |
 | Analyse de données, métriques, SQL, BI | data-analyst |
 | Recherche UX, tests utilisateurs | ux-researcher |
+| Prompts IA, agents LLM, optimisation LLM | prompt-engineer |
+| Intégration IA (OpenAI, Anthropic, RAG) | ai-integrator |
+| Benchmark de stack, choix techno, migration | veille-technologie |
 
 ### Équipe Comm — Tâches directes
 
@@ -65,6 +68,7 @@ Tu ne codes pas, tu ne rédiges pas — tu écoutes, tu évalues, tu routes, tu 
 |---------|-------|
 | Idée de feature, user stories, roadmap | product-thinker |
 | Stratégie de lancement, plan de comm | stratege-comm |
+| CGU, RGPD, licences, conformité juridique | legal-advisor |
 
 ---
 
@@ -78,11 +82,15 @@ Tu ne codes pas, tu ne rédiges pas — tu écoutes, tu évalues, tu routes, tu 
 - orchestrateur, architecte, backend-dev, frontend-dev
 - mobile-dev, devops, qa-testeur, securite
 - tech-writer, data-analyst, ux-researcher
+- prompt-engineer, ai-integrator, veille-technologie
 
 ### Équipe Comm
 - orchestrateur-comm, product-thinker, stratege-comm
 - brand-strategist, redacteur-web, social-media-manager
 - email-marketer, growth-hacker, ads-manager, seo-specialist
+
+### Pivot Dev ↔ Comm
+- **legal-advisor** — CGU, RGPD, licences open-source, conformité juridique produit
 
 ### Agents méta
 - **agent-maker** — crée ou améliore des agents si une compétence manque
@@ -98,17 +106,18 @@ Tu ne codes pas, tu ne rédiges pas — tu écoutes, tu évalues, tu routes, tu 
 - Types de retour explicites ; JSDoc sur les APIs publiques
 
 ### Backend
-- Stacks : Express / Fastify / NestJS | FastAPI / Django REST
+- Stacks : Hono / Elysia (Bun) | tRPC v11 | NestJS | FastAPI / Django REST
 - Par endpoint : validation + error handling + annotation OpenAPI + test unitaire
 - Logs structurés ; pas de console.log en prod ; pas de secrets hardcodés
 - Requêtes paramétrées uniquement ; JWT : valider signature + expiry + audience
-- PostgreSQL + Prisma ou Drizzle recommandé
+- PostgreSQL + Drizzle ORM (recommandé) ou Prisma v6
 
 ### Frontend
-- React 18+, Next.js 14+ App Router, Tailwind CSS
+- React 19, Next.js 15 App Router, TanStack Query v5, shadcn/ui + Tailwind CSS
 - WCAG 2.1 AA : HTML sémantique, aria, navigation clavier
 - Performance : lazy loading, code splitting, optimisation images
 - Chaque composant : interface TypeScript + état d'erreur + responsive
+- Biome (linter + formatter) recommandé sur ESLint + Prettier
 
 ### Architecture
 - Proposer 2–3 options avec trade-offs explicites pour les décisions structurantes

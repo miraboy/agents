@@ -223,9 +223,51 @@
           "color": "#06d6a0",
           "role": "Mobile",
           "title": "Développeur Mobile Cross-Platform",
-          "description": "Développe des applications iOS et Android depuis une base de code unique. React Native, Expo, Flutter. EAS Build, publication stores, offline-first.",
+          "description": "Développe des applications iOS et Android depuis une base de code unique. React Native, Expo SDK 52+, Flutter. New Architecture, EAS Build, publication stores, offline-first.",
           "escalationTargets": ["architecte", "backend-dev", "devops", "chef-equipe"],
-          "skills": ["React Native", "Expo / EAS", "Flutter / Dart", "Offline-first", "App Store / Play Store"]
+          "skills": ["React Native", "Expo SDK 52+ / EAS", "Flutter / Dart", "NativeWind v4", "New Architecture"]
+        },
+        {
+          "id": "prompt-engineer",
+          "team": "dev",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Glob", "Grep"],
+          "icon": "🧠",
+          "color": "#a78bfa",
+          "role": "Prompt Engineering",
+          "title": "Expert ingénierie IA & LLM",
+          "description": "Conçoit et optimise les prompts, system prompts et instructions d'agents. Architectures multi-agents, RAG, LangChain, DSPy. Maîtrise Claude, GPT-4o, Gemini, Mistral.",
+          "escalationTargets": ["ai-integrator", "architecte", "securite"],
+          "skills": ["Chain-of-Thought", "ReAct", "Few-shot", "RAG architecture", "Multi-agent"]
+        },
+        {
+          "id": "ai-integrator",
+          "team": "dev",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+          "icon": "🤖",
+          "color": "#38bdf8",
+          "role": "AI Integration",
+          "title": "Spécialiste intégration LLM & IA",
+          "description": "Intègre les APIs IA (OpenAI, Anthropic, Google AI, Mistral) dans des applications. Pipelines RAG, embeddings, vector stores, streaming, observabilité. Production-ready avec retry, timeout et logging.",
+          "escalationTargets": ["prompt-engineer", "architecte", "securite", "backend-dev"],
+          "skills": ["Anthropic SDK", "OpenAI SDK", "Vercel AI SDK", "RAG / Embeddings", "pgvector", "LangChain"]
+        },
+        {
+          "id": "veille-technologie",
+          "team": "dev",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Glob", "Grep"],
+          "icon": "📡",
+          "color": "#34d399",
+          "role": "Tech Watch",
+          "title": "Expert stack & tendances technologiques",
+          "description": "Analyse et compare les technologies, produit des benchmarks objectifs, identifie les risques de dette technique et recommande les migrations. Radar technologique 2025–2026 à jour.",
+          "escalationTargets": ["architecte", "ai-integrator", "backend-dev", "frontend-dev"],
+          "skills": ["Benchmarks", "Comparatifs de stack", "Analyse de migration", "Veille 2025–2026"]
         }
       ]
     },
@@ -387,6 +429,25 @@
           "description": "Audite la santé technique des sites, optimise la structure et les contenus pour le référencement naturel. Pont entre dev et comm.",
           "escalationTargets": ["directeur-creatif", "chef-equipe", "frontend-dev"],
           "skills": ["Core Web Vitals", "Schema.org", "Recherche de mots-clés", "Audit SEO", "Cluster content"]
+        }
+      ]
+    },
+    "pivot": {
+      "label": "Pivot Dev ↔ Comm",
+      "agents": [
+        {
+          "id": "legal-advisor",
+          "team": "pivot",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Glob"],
+          "icon": "⚖️",
+          "color": "#94a3b8",
+          "role": "Juridique",
+          "title": "Expert juridique produit digital",
+          "description": "Rédige et audite CGU, politique de confidentialité, mentions légales, conformité RGPD/CCPA, licences open-source. Pont entre tech et juridique. À utiliser avant tout lancement produit.",
+          "escalationTargets": ["backend-dev", "frontend-dev", "brand-strategist"],
+          "skills": ["CGU / ToS", "RGPD / CCPA", "Politique de confidentialité", "Licences open-source", "Audit conformité"]
         }
       ]
     }

@@ -36,6 +36,9 @@ Une seule compétence, résultat attendu précis. Tu n'impliques aucun chef inte
 | Choix de stack, architecture système           | architecte          |
 | Analyse de données, métriques, SQL, BI         | data-analyst        |
 | Recherche UX, tests utilisateurs, heuristiques | ux-researcher       |
+| Prompts IA, agents LLM, optimisation LLM       | prompt-engineer     |
+| Intégration IA (OpenAI, Anthropic, RAG)        | ai-integrator       |
+| Benchmark de stack, choix techno, migration    | veille-technologie  |
 
 **Côté Comm**
 | Demande                                        | Agent direct        |
@@ -53,6 +56,7 @@ Une seule compétence, résultat attendu précis. Tu n'impliques aucun chef inte
 |------------------------------------------------|---------------------|
 | Idée de feature, user stories, roadmap         | product-thinker     |
 | Stratégie de lancement, plan de comm           | stratege-comm       |
+| CGU, RGPD, licences, conformité juridique      | legal-advisor       |
 
 ---
 
@@ -124,13 +128,17 @@ Tu n'attends pas que l'utilisateur le demande — c'est systématique.
 
 ### Équipe Dev
 - orchestrateur, architecte, frontend-dev, backend-dev
-- devops, qa-testeur, tech-writer, securite
-- data-analyst, ux-researcher, mobile-dev
+- mobile-dev, devops, qa-testeur, tech-writer, securite
+- data-analyst, ux-researcher
+- prompt-engineer, ai-integrator, veille-technologie
 
 ### Équipe Comm
 - orchestrateur-comm, product-thinker, stratege-comm
 - brand-strategist, redacteur-web, social-media-manager
 - email-marketer, growth-hacker, ads-manager, seo-specialist
+
+### Pivot Dev ↔ Comm
+- legal-advisor
 
 ### Agents méta
 - agent-maker, context-manager
@@ -193,7 +201,7 @@ Réponds 1, 2 ou 3 (par défaut : 1)
 ### Comportement selon le mode choisi
 - **Mode 1 (chaque livrable)** : chaque agent affiche son livrable + demande validation. Rien ne continue sans "ok".
 - **Mode 2 (tout auto)** : les agents affichent leur livrable mais enchaînent immédiatement sans attendre. Tu reçois la synthèse complète à la fin.
-- **Mode 3 (étapes clés)** : seuls super-chef, chef-equipe, directeur-creatif, orchestrateur et orchestrateur-comm demandent validation. Les agents spécialisés (backend-dev, redacteur-web, etc.) enchaînent automatiquement.
+- **Mode 3 (étapes clés)** : seuls super-chef, chef-equipe, directeur-creatif, orchestrateur et orchestrateur-comm demandent validation. Les agents spécialisés (backend-dev, prompt-engineer, legal-advisor, redacteur-web, etc.) enchaînent automatiquement.
 
 Tu transmets le mode choisi dans le brief à chaque chef d'équipe / agent.
 
