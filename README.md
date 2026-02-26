@@ -1,113 +1,185 @@
 # Agents Library
 
-Ce dépôt contient deux équipes de sous-agents prêtes à copier dans `.claude/agents`, plus un super-chef qui coordonne les deux. Des **adapters** permettent également d'utiliser la même expertise dans GitHub Copilot, Amazon Q Developer, Aider et Codex CLI.
+> Un framework multi-agents prêt à l'emploi — **30 agents spécialisés**, deux équipes coordonnées, un point d'entrée unique.
+> Compatible Claude Code, GitHub Copilot, Amazon Q, Aider et OpenAI Codex.
 
-## Structure
+---
+
+## Vue d'ensemble
 
 ```
-super-chef.md              ← Point d'entrée unique (route vers dev ou comm)
-agents.json                ← Source de vérité centralisée (tous les agents)
-agent-dev/                 ← Équipe développement (11 agents)
-agent-com/                 ← Équipe communication & growth (11 agents)
-adapters/                  ← Prompts pour GitHub Copilot, Amazon Q, Aider, Codex CLI
-templates/                 ← Template CLAUDE.md pour le context-manager
-examples/                  ← Scénarios d'utilisation multi-agents
-scripts/                   ← Outils de maintenance (génération dashboards + adapters)
+                        👑 super-chef
+                    (point d'entrée unique)
+                           │
+              ┌────────────┼────────────┐
+              │            │            │
+        🎯 chef-equipe  ⚖️ pivot   🎬 directeur-creatif
+        Équipe Dev      Dev↔Comm   Équipe Comm
 ```
 
-## Dossiers
+**Le super-chef** reçoit toutes les demandes — dev, comm, produit ou mixtes — et route intelligemment vers les bons spécialistes. Tu n'as jamais à choisir qui appeler.
 
-- `agent-dev/` : équipe développement (architecture, frontend, backend, QA, sécurité, data, UX, etc.)
-- `agent-com/` : équipe communication/growth (stratégie, branding, contenu, SEO, acquisition, etc.)
-- `adapters/` : fichiers de prompts adaptés pour GitHub Copilot, Amazon Q, Aider, Codex CLI
-- `templates/` : template CLAUDE.md structuré pour le context-manager
-- `examples/` : 3 scénarios concrets montrant l'orchestration multi-agents
-- `scripts/` : scripts de régénération des dashboards et des adapters depuis `agents.json`
+---
+
+## Les équipes
+
+### 🛠️ Équipe Dev — 15 agents
+
+| Agent | Rôle |
+|-------|------|
+| 🎯 `chef-equipe` | Lead Dev / CTO — interlocuteur principal, pilote l'équipe |
+| 🔀 `orchestrateur` | Décompose les projets complexes, coordonne les flux |
+| 🏗️ `architecte` | Conception système, choix de stack, ADRs |
+| ⚡ `backend-dev` | APIs, BDD, logique métier — Bun, Hono, tRPC, Drizzle |
+| 🎨 `frontend-dev` | UI web — React 19, Next.js 15, TanStack, shadcn/ui |
+| 📱 `mobile-dev` | iOS/Android — React Native, Expo SDK 52+, Flutter |
+| 🚀 `devops` | CI/CD, Docker, infrastructure as code |
+| 🧪 `qa-testeur` | Tests unitaires, intégration, E2E |
+| 🔒 `securite` | Audit OWASP, vulnérabilités, bonnes pratiques |
+| 📝 `tech-writer` | READMEs, docs API, guides utilisateur |
+| 📊 `data-analyst` | Métriques produit, SQL, dashboards, KPIs |
+| 🔍 `ux-researcher` | Tests utilisateurs, heuristiques, parcours UX |
+| 🧠 `prompt-engineer` | Ingénierie de prompts, agents LLM, architectures IA |
+| 🤖 `ai-integrator` | Intégration APIs IA, pipelines RAG, streaming |
+| 📡 `veille-technologie` | Benchmark de stacks, recommandations, alertes migration |
+
+### 📣 Équipe Comm — 11 agents
+
+| Agent | Rôle |
+|-------|------|
+| 🎬 `directeur-creatif` | Lead créatif — vision de marque, coordination comm |
+| 🔀 `orchestrateur-comm` | Coordonne les projets comm complexes |
+| 🗺️ `stratege-comm` | Plans de communication 360°, positionnement, KPIs |
+| 💡 `product-thinker` | User stories, roadmap, pont dev ↔ comm |
+| 💎 `brand-strategist` | Identité de marque, messaging, tone of voice |
+| ✍️ `redacteur-web` | Copywriting, landing pages, articles SEO |
+| 📱 `social-media-manager` | Réseaux sociaux, calendriers éditoriaux |
+| 📧 `email-marketer` | Séquences email, newsletters, automation |
+| 📈 `growth-hacker` | Acquisition, conversion, funnels, A/B tests |
+| 📣 `ads-manager` | Meta Ads, Google Ads, TikTok Ads, LinkedIn Ads |
+| 🔎 `seo-specialist` | SEO technique et éditorial, Core Web Vitals |
+
+### ⚖️ Pivot Dev ↔ Comm — 1 agent
+
+| Agent | Rôle |
+|-------|------|
+| ⚖️ `legal-advisor` | CGU, RGPD/CCPA, mentions légales, licences open-source |
+
+### 🧬 Agents méta — 2 agents
+
+| Agent | Rôle |
+|-------|------|
+| 🧬 `agent-maker` | Crée un nouvel agent si une compétence manque à l'équipe |
+| 🧠 `context-manager` | Mémoire du projet, CLAUDE.md, handoffs inter-sessions |
+
+---
 
 ## Installation
-
-Depuis la racine de votre projet :
 
 ```bash
 npx github:miraboy/agents
 ```
 
-Le script copie tous les fichiers agents dans les destinations appropriées, crée les dossiers manquants et ajoute un bloc dans le **gitignore global** (`~/.gitignore_global`) pour que les configs restent invisibles à git sur tout le système, sans polluer le `.gitignore` de votre projet.
+Le script installe les agents dans **tous les outils supportés** en une seule commande, crée les dossiers manquants et ajoute automatiquement un bloc dans `.gitignore` pour garder ces configs locales.
+
+### Ce qui est installé
+
+| Outil | Destination | Contenu |
+|-------|-------------|---------|
+| **Claude Code** | `.claude/agents/` | super-chef + 29 agents |
+| **GitHub Copilot** | `.github/` | `copilot-instructions.md` + instructions par équipe |
+| **Amazon Q** | `.amazonq/rules/` | `dev-team.md` + `comm-team.md` |
+| **OpenAI Codex** | `AGENTS.md` + `.codex/config.toml` | Rôles, profils, standards |
+| **Aider** | `CONVENTIONS.md` + `.aider.conf.yml` | Conventions et config |
 
 ### Commandes disponibles
 
 ```bash
-agents-install              # installe tout (équipes dev + comm + super-chef + adapters)
-agents-install --force      # écrase les fichiers existants
-agents-install --dry-run    # prévisualise sans écrire
-agents-install --target <dir>  # installe dans un dossier spécifique
+npx github:miraboy/agents                    # installe tout
+npx github:miraboy/agents --force            # écrase les fichiers existants
+npx github:miraboy/agents --dry-run          # prévisualise sans écrire
+npx github:miraboy/agents --target <dir>     # installe dans un dossier spécifique
 
-agents-uninstall            # supprime tous les fichiers installés + nettoie .gitignore
-agents-uninstall --dry-run  # prévisualise sans supprimer
+agents-uninstall                             # supprime tout + nettoie .gitignore
+agents-uninstall --dry-run                   # prévisualise sans supprimer
 ```
 
-### Ce qui est installé
+> Les fichiers installés sont ajoutés au `.gitignore` du projet — ils restent locaux à chaque développeur.
 
-| Destination | Contenu |
-|---|---|
-| `.claude/agents/` | `super-chef.md` + tous les agents dev & comm |
-| `.github/copilot-instructions.md` | Instructions GitHub Copilot |
-| `.github/instructions/` | Instructions Copilot par équipe |
-| `.amazonq/rules/` | Règles Amazon Q Developer |
-| `.codex/` | System prompts OpenAI Codex CLI |
-| `CONVENTIONS.md` + `.aider.conf.yml` | Config Aider |
+---
 
-> Les dossiers sont créés automatiquement s'ils n'existent pas.
-> Un bloc `# agents-library [start/end]` est ajouté dans `.gitignore` pour que ces fichiers restent locaux à chaque développeur.
+## Structure du dépôt
 
-## agents.json
+```
+agents-library/
+├── super-chef.md              👑 Point d'entrée unique
+├── agents.json                📋 Source de vérité (tous les agents)
+│
+├── agent-dev/                 🛠️  Équipe développement (15 agents)
+├── agent-com/                 📣 Équipe communication & growth (12 agents)
+│
+├── adapters/                  🔌 Adapters pour les autres outils AI
+│   ├── github-copilot/
+│   ├── amazon-q/
+│   ├── aider/
+│   └── codex/
+│
+├── templates/                 📄 Template CLAUDE.md pour le context-manager
+├── examples/                  💡 Scénarios d'utilisation multi-agents
+└── bin/                       ⚙️  Scripts d'installation / mise à jour / désinstallation
+```
 
-Fichier centralisé contenant les métadonnées de tous les agents (id, modèle, outils, escalation targets, etc.). C'est la source unique de vérité utilisée par le script de génération des dashboards.
+---
 
-## Dashboards
+## Utilisation
 
-- `agent-dev/dashboard.html` — visualisation interactive de l'équipe dev
-- `agent-com/dashboard-comm.html` — visualisation interactive de l'équipe comm
+### Claude Code
 
-### Régénérer les dashboards
+Invoque `@super-chef` pour n'importe quelle demande — il route vers le bon agent.
 
-Les dashboards sont générés depuis `agents.json`. Après toute modification d'agent :
+```
+@super-chef je veux créer une API de gestion d'utilisateurs avec auth JWT
+@super-chef prépare une stratégie de lancement pour mon app
+@super-chef j'ai besoin d'intégrer l'API Anthropic dans mon app Next.js
+@super-chef audite les CGU de mon SaaS pour la conformité RGPD
+```
+
+Ou invoque un agent directement si tu sais déjà ce dont tu as besoin :
+
+```
+@backend-dev crée un endpoint POST /auth/login avec Hono + Drizzle
+@prompt-engineer optimise ce system prompt pour réduire les hallucinations
+@legal-advisor génère une politique de confidentialité RGPD pour mon SaaS
+@veille-technologie compare tRPC vs REST vs GraphQL pour mon projet
+```
+
+### OpenAI Codex (CLI + VSCode)
+
+`AGENTS.md` est lu automatiquement à la racine du projet. Utilise `@super-chef` ou l'un des rôles directement.
 
 ```bash
-./scripts/generate-dashboards.sh
+codex "analyse l'architecture actuelle et propose des améliorations"
+codex --profile super-chef "..."   # o3 high reasoning
+codex --profile dev "..."          # o4-mini medium
 ```
 
-Requiert `jq` (`apt install jq` / `brew install jq`).
+---
 
-## Exemples de scénarios
+## Mode de validation
 
-- `examples/landing-page-launch.md` — projet mixte dev + comm
-- `examples/bug-fix-critical.md` — urgence dev uniquement
-- `examples/campagne-sociale.md` — campagne comm uniquement
+Au démarrage d'un projet, le super-chef propose trois modes :
 
-## Template CLAUDE.md
+| Mode | Comportement |
+|------|-------------|
+| **1 — Contrôle total** | Chaque agent attend ton "ok" avant de continuer |
+| **2 — Tout automatique** | Les agents enchaînent, tu reçois la synthèse finale |
+| **3 — Étapes clés** | Seuls les chefs et orchestrateurs demandent validation |
 
-Le fichier `templates/CLAUDE.md.template` fournit un squelette structuré pour le context-manager. Il couvre : vue d'ensemble, stack, architecture, état actuel, décisions, dette technique, prochaines étapes.
+---
 
-## Adapters — autres outils AI
+## Ressources
 
-Le dossier `adapters/` contient des prompts prêts à l'emploi pour utiliser l'expertise des équipes dans d'autres assistants AI. Ils sont installés automatiquement par `agents-install`.
-
-| Outil | Destination | Fichiers |
-|-------|-------------|---------|
-| **GitHub Copilot** | `.github/` | `copilot-instructions.md` + 2 instructions par équipe |
-| **Amazon Q Developer** | `.amazonq/rules/` | `dev-team.md` + `comm-team.md` |
-| **Aider** | `./` | `CONVENTIONS.md` + `.aider.conf.yml` |
-| **Codex CLI** | `.codex/` | `system-prompt-dev/comm/full.txt` |
-
-Voir `adapters/README.md` pour les instructions détaillées par outil.
-
-### Régénérer les adapters
-
-Après toute modification d'`agents.json` :
-
-```bash
-./scripts/generate-adapters.sh
-```
-
-Requiert `jq` (`apt install jq` / `brew install jq`).
+- **Dashboards interactifs** : `agent-dev/dashboard.html` · `agent-com/dashboard-comm.html`
+- **Exemples de scénarios** : `examples/landing-page-launch.md` · `examples/bug-fix-critical.md` · `examples/campagne-sociale.md`
+- **Template CLAUDE.md** : `templates/CLAUDE.md.template`
+- **Adapters détaillés** : `adapters/README.md`

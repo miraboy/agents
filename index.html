@@ -1,137 +1,926 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agents - Accueil</title>
+  <title>Agents Library — Multi-Team AI Framework</title>
+  <script>
+    (function() {
+      const t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #0e1a24;
-      --bg-soft: #152636;
-      --card: #1d3145;
-      --text: #f2f7fb;
-      --muted: #b9c8d6;
-      --accent: #18a999;
-      --accent-2: #f4b942;
+      --bg:      #0a0a0f;
+      --surface: #111118;
+      --card:    #13131c;
+      --border:  #1e1e2e;
+      --text:    #e8e8f0;
+      --muted:   #5a5a72;
+      --muted2:  #8888a8;
+      --accent:  #00ff88;
+      --accent2: #7c5cfc;
+      --accent3: #ff6b35;
+      --gold:    #f4b942;
+      --blue:    #38bdf8;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    [data-theme="light"] {
+      --bg:      #f4f4fa;
+      --surface: #ffffff;
+      --card:    #ededf5;
+      --border:  #d4d4e8;
+      --text:    #1a1a2e;
+      --muted:   #8080a8;
+      --muted2:  #4a4a72;
+      --accent:  #00aa55;
+      --accent2: #6b44f8;
+      --accent3: #e05a20;
+      --gold:    #c99200;
+      --blue:    #0284c7;
     }
 
     body {
-      min-height: 100vh;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(24, 169, 153, 0.25), transparent 35%),
-        radial-gradient(circle at 85% 10%, rgba(244, 185, 66, 0.2), transparent 32%),
-        var(--bg);
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
       color: var(--text);
-      display: grid;
-      place-items: center;
-      padding: 24px;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.25s, color 0.25s;
     }
 
-    main {
-      width: min(980px, 100%);
-      background: linear-gradient(160deg, rgba(29, 49, 69, 0.9), rgba(21, 38, 54, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 34px;
-      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.35);
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.25s;
     }
 
-    h1 {
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      margin-bottom: 10px;
-      letter-spacing: 0.02em;
+    [data-theme="light"] body::before {
+      background-image:
+        linear-gradient(rgba(0,150,80,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,150,80,0.05) 1px, transparent 1px);
     }
 
-    p {
-      color: var(--muted);
-      line-height: 1.55;
-      margin-bottom: 26px;
+    /* ── CONTROLS ── */
+    .controls {
+      position: fixed;
+      top: 18px;
+      right: 20px;
+      z-index: 200;
+      display: flex;
+      gap: 8px;
     }
 
-    .dashboards {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    .ctrl-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted2);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      letter-spacing: 0.05em;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 14px;
-      padding: 18px;
-      display: grid;
-      gap: 10px;
+    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
     }
 
-    .card h2 {
-      font-size: 1.1rem;
+    /* ── HERO ── */
+    .hero { text-align: center; margin-bottom: 64px; }
+
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    .card p {
-      margin: 0;
-      font-size: 0.95rem;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 6px;
-      text-decoration: none;
-      text-align: center;
-      color: #072019;
+    .hero-tag::before, .hero-tag::after {
+      content: '';
+      width: 32px; height: 1px;
       background: var(--accent);
+      opacity: 0.5;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, var(--text) 30%, var(--accent) 70%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted2);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+
+    .install-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--accent);
+      cursor: pointer;
+      transition: border-color 0.2s;
+      margin-bottom: 32px;
+    }
+
+    .install-box:hover { border-color: var(--accent); }
+    .install-box .prompt { color: var(--muted); }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted2);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      padding: 4px 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .copy-btn:hover, .copy-btn.copied { border-color: var(--accent); color: var(--accent); }
+
+    .tools-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .tool-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid;
+      letter-spacing: 0.05em;
+    }
+
+    .tool-badge.claude  { border-color: rgba(0,255,136,.4);  color: var(--accent);  background: rgba(0,255,136,.06); }
+    .tool-badge.codex   { border-color: rgba(56,189,248,.4); color: var(--blue);    background: rgba(56,189,248,.06); }
+    .tool-badge.copilot { border-color: rgba(124,92,252,.4); color: var(--accent2); background: rgba(124,92,252,.06); }
+    .tool-badge.amazonq { border-color: rgba(255,107,53,.4); color: var(--accent3); background: rgba(255,107,53,.06); }
+    .tool-badge.aider   { border-color: rgba(244,185,66,.4); color: var(--gold);    background: rgba(244,185,66,.06); }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 64px;
+    }
+
+    .stat { flex: 1; background: var(--surface); padding: 20px 16px; text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; display: block; }
+    .stat-num.green  { color: var(--accent); }
+    .stat-num.purple { color: var(--accent2); }
+    .stat-num.orange { color: var(--accent3); }
+    .stat-num.gold   { color: var(--gold); }
+    .stat-num.blue   { color: var(--blue); }
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 4px;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-title h2 { font-size: 1.25rem; font-weight: 700; }
+
+    .section-title .count {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ── SUPER-CHEF ── */
+    .superchef-section { margin-bottom: 48px; }
+
+    .superchef-card {
+      background: linear-gradient(135deg, rgba(244,185,66,0.08), rgba(124,92,252,0.06));
+      border: 1px solid rgba(244,185,66,0.25);
+      border-radius: 16px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .superchef-card .s-icon { font-size: 2.4rem; flex-shrink: 0; }
+    .superchef-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+    .superchef-card p { color: var(--muted2); font-size: 0.9rem; line-height: 1.5; }
+
+    .model-badge {
+      margin-left: auto;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--gold);
+      background: rgba(244,185,66,0.1);
+      border: 1px solid rgba(244,185,66,0.3);
+      border-radius: 6px;
+      padding: 5px 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── AGENT GRID ── */
+    .team-section { margin-bottom: 52px; }
+
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(218px, 1fr));
+      gap: 12px;
+    }
+
+    .agent-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: border-color 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .agent-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--c, var(--accent));
+      opacity: 0.65;
+    }
+
+    .agent-card:hover {
+      border-color: var(--c, var(--accent));
+      transform: translateY(-2px);
+    }
+
+    .agent-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .agent-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+    .agent-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.76rem;
       font-weight: 700;
-      border-radius: 10px;
-      padding: 10px 12px;
-      transition: transform 0.2s ease, filter 0.2s ease;
+      color: var(--c, var(--accent));
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .btn.secondary {
-      background: var(--accent-2);
-      color: #2b1f00;
+    .agent-role {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
+    .agent-desc { font-size: 0.81rem; color: var(--muted2); line-height: 1.5; }
+
+    /* ── PIVOT ── */
+    .pivot-card {
+      background: linear-gradient(135deg, rgba(148,163,184,0.07), rgba(148,163,184,0.03));
+      border: 1px solid rgba(148,163,184,0.2);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
     }
 
-    .hint {
-      margin-top: 20px;
-      font-size: 0.88rem;
-      color: #9eb1c4;
+    .pivot-card .p-icon { font-size: 1.8rem; flex-shrink: 0; margin-top: 2px; }
+    .pivot-card h3 { font-size: 0.95rem; font-weight: 700; color: #94a3b8; margin-bottom: 5px; font-family: 'Space Mono', monospace; }
+    .pivot-card p { color: var(--muted2); font-size: 0.84rem; line-height: 1.55; }
+
+    /* ── MÉTA ── */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+    }
+
+    .meta-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .meta-card .m-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+    .meta-card h3 { font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; color: var(--muted2); margin-bottom: 5px; }
+    .meta-card p { font-size: 0.81rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── DASHBOARDS ── */
+    .dashboards-section { margin-bottom: 52px; }
+
+    .dashboards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .dashboard-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .dashboard-card:hover { transform: translateY(-3px); }
+    .dashboard-card.dev-card  { border-color: rgba(0,255,136,0.2); }
+    .dashboard-card.dev-card:hover  { border-color: var(--accent); }
+    .dashboard-card.comm-card { border-color: rgba(244,63,94,0.2); }
+    .dashboard-card.comm-card:hover { border-color: #f43f5e; }
+
+    .dashboard-card .d-icon { font-size: 2rem; }
+    .dashboard-card h3 { font-size: 1.05rem; font-weight: 700; }
+    .dev-card  h3 { color: var(--accent); }
+    .comm-card h3 { color: #f43f5e; }
+    .dashboard-card p { font-size: 0.85rem; color: var(--muted2); line-height: 1.5; }
+
+    .dashboard-card .arrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dev-card  .arrow { color: var(--accent); }
+    .comm-card .arrow { color: #f43f5e; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .stats { flex-wrap: wrap; }
+      .stat { min-width: 50%; }
+      .superchef-card .model-badge { margin-left: 0; }
+      .install-box { flex-wrap: wrap; justify-content: center; }
+      .controls { top: 12px; right: 12px; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Hub des Agents</h1>
-    <p>
-      Cette page sert d'accueil du projet. Choisissez le dashboard à ouvrir
-      pour accéder directement à l'espace de travail correspondant.
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button class="ctrl-btn" id="theme-btn" onclick="toggleTheme()">☀️ light</button>
+  <button class="ctrl-btn" id="lang-btn" onclick="toggleLang()">EN</button>
+</div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag"><span data-i18n="hero-tag">agents library</span></div>
+
+    <h1>Multi-Team AI Framework</h1>
+    <p class="hero-sub" data-i18n="hero-sub">
+      30 agents spécialisés — dev, comm, IA, juridique — coordonnés par un super-chef.<br>
+      Un seul point d'entrée, tous les outils AI supportés.
     </p>
 
-    <section class="dashboards" aria-label="Accès aux dashboards">
-      <article class="card">
-        <h2>Dashboard Développement</h2>
-        <p>Suivi des rôles techniques et organisation de l'équipe dev.</p>
-        <a class="btn" href="agent-dev/dashboard.html">Ouvrir le dashboard dev</a>
-      </article>
+    <div class="install-box" onclick="copyInstall()">
+      <span class="prompt">$</span>
+      <span id="install-cmd">npx github:miraboy/agents</span>
+      <button class="copy-btn" id="copy-btn" data-i18n="copy-btn">copier</button>
+    </div>
 
-      <article class="card">
-        <h2>Dashboard Communication</h2>
-        <p>Pilotage des rôles marketing, contenu et stratégie de communication.</p>
-        <a class="btn secondary" href="agent-com/dashboard-comm.html">Ouvrir le dashboard com</a>
-      </article>
-    </section>
+    <div class="tools-row">
+      <span class="tool-badge claude">Claude Code</span>
+      <span class="tool-badge codex">OpenAI Codex</span>
+      <span class="tool-badge copilot">GitHub Copilot</span>
+      <span class="tool-badge amazonq">Amazon Q</span>
+      <span class="tool-badge aider">Aider</span>
+    </div>
+  </section>
 
-    <!-- <p class="hint">Astuce: définissez cette page comme point d'entrée (`index.html`).</p> -->
-  </main>
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-num gold">30</span>
+      <div class="stat-label" data-i18n="stat-total">agents total</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num green">15</span>
+      <div class="stat-label" data-i18n="stat-dev">équipe dev</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num orange">11</span>
+      <div class="stat-label" data-i18n="stat-comm">équipe comm</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num blue">3</span>
+      <div class="stat-label" data-i18n="stat-ai">agents IA</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num purple">5</span>
+      <div class="stat-label" data-i18n="stat-tools">outils supportés</div>
+    </div>
+  </div>
+
+  <!-- SUPER-CHEF -->
+  <section class="superchef-section">
+    <div class="section-title">
+      <h2 data-i18n="entry-title">Point d'entrée unique</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="superchef-card">
+      <div class="s-icon">👑</div>
+      <div>
+        <h3>super-chef</h3>
+        <p data-i18n="superchef-desc">CEO technique / Chief of Staff. Reçoit toutes les demandes — dev, comm, produit ou mixtes — et route intelligemment vers le bon spécialiste. Tu n'as jamais à choisir qui appeler.</p>
+      </div>
+      <div class="model-badge" data-i18n="model-opus">Opus · Haut niveau</div>
+    </div>
+  </section>
+
+  <!-- ÉQUIPE DEV -->
+  <section class="team-section">
+    <div class="section-title">
+      <h2 data-i18n="team-dev">🛠️ Équipe Développement</h2>
+      <span class="count">15 agents</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="agent-grid">
+
+      <div class="agent-card" style="--c:#00ff88">
+        <div class="agent-header"><span class="agent-icon">🎯</span><div><div class="agent-name">chef-equipe</div><div class="agent-role" data-i18n="role-chef-equipe">Lead Dev / CTO</div></div></div>
+        <p class="agent-desc" data-i18n="desc-chef-equipe">Interlocuteur principal, comprend la vision, pilote l'équipe et tient informé de l'avancement.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#7c5cfc">
+        <div class="agent-header"><span class="agent-icon">🔀</span><div><div class="agent-name">orchestrateur</div><div class="agent-role" data-i18n="role-orchestrateur">Orchestrateur</div></div></div>
+        <p class="agent-desc" data-i18n="desc-orchestrateur">Décompose les projets complexes, assigne les agents, coordonne les flux parallèles.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#f97316">
+        <div class="agent-header"><span class="agent-icon">🏗️</span><div><div class="agent-name">architecte</div><div class="agent-role" data-i18n="role-architecte">Architecture</div></div></div>
+        <p class="agent-desc" data-i18n="desc-architecte">Conception système, choix de stack, ADRs. 2–3 options avec trade-offs explicites.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#ff6b35">
+        <div class="agent-header"><span class="agent-icon">⚡</span><div><div class="agent-name">backend-dev</div><div class="agent-role" data-i18n="role-backend">Backend</div></div></div>
+        <p class="agent-desc" data-i18n="desc-backend-dev">Bun, Hono, Elysia, tRPC v11, NestJS, FastAPI. PostgreSQL + Drizzle ORM.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#3b82f6">
+        <div class="agent-header"><span class="agent-icon">🎨</span><div><div class="agent-name">frontend-dev</div><div class="agent-role" data-i18n="role-frontend">Frontend</div></div></div>
+        <p class="agent-desc" data-i18n="desc-frontend-dev">React 19, Next.js 15, TanStack Router/Query, shadcn/ui, Biome. WCAG 2.1 AA.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#06d6a0">
+        <div class="agent-header"><span class="agent-icon">📱</span><div><div class="agent-name">mobile-dev</div><div class="agent-role" data-i18n="role-mobile">Mobile</div></div></div>
+        <p class="agent-desc" data-i18n="desc-mobile-dev">React Native + Expo SDK 52+ (New Architecture), NativeWind v4, Flutter, EAS.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#22c55e">
+        <div class="agent-header"><span class="agent-icon">🚀</span><div><div class="agent-name">devops</div><div class="agent-role">DevOps</div></div></div>
+        <p class="agent-desc" data-i18n="desc-devops">CI/CD, Docker multi-stage, infrastructure as code. Zéro déploiement manuel en prod.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#eab308">
+        <div class="agent-header"><span class="agent-icon">🧪</span><div><div class="agent-name">qa-testeur</div><div class="agent-role">QA</div></div></div>
+        <p class="agent-desc" data-i18n="desc-qa-testeur">Tests unitaires, intégration, E2E. Couverture &gt;80%. Vitest, Pytest, Playwright.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#ef4444">
+        <div class="agent-header"><span class="agent-icon">🔒</span><div><div class="agent-name">securite</div><div class="agent-role" data-i18n="role-securite">Sécurité</div></div></div>
+        <p class="agent-desc" data-i18n="desc-securite">Audit OWASP Top 10, JWT, XSS, IDOR. Vulnérabilité critique = blocage production.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#8b5cf6">
+        <div class="agent-header"><span class="agent-icon">📝</span><div><div class="agent-name">tech-writer</div><div class="agent-role" data-i18n="role-tech-writer">Documentation</div></div></div>
+        <p class="agent-desc" data-i18n="desc-tech-writer">READMEs, docs OpenAPI, guides utilisateur, changelogs. Lit le code avant d'écrire.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#0ea5e9">
+        <div class="agent-header"><span class="agent-icon">📊</span><div><div class="agent-name">data-analyst</div><div class="agent-role">Data</div></div></div>
+        <p class="agent-desc" data-i18n="desc-data-analyst">Métriques produit, KPIs, dashboards. SQL, Python/pandas, A/B testing.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#ec4899">
+        <div class="agent-header"><span class="agent-icon">🔍</span><div><div class="agent-name">ux-researcher</div><div class="agent-role">UX Research</div></div></div>
+        <p class="agent-desc" data-i18n="desc-ux-researcher">Tests utilisateurs, heuristiques Nielsen, parcours UX, personas, accessibilité.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#a78bfa">
+        <div class="agent-header"><span class="agent-icon">🧠</span><div><div class="agent-name">prompt-engineer</div><div class="agent-role">Prompt Engineering</div></div></div>
+        <p class="agent-desc" data-i18n="desc-prompt-engineer">System prompts, agents LLM, CoT, ReAct, RAG. Claude, GPT-4o, Gemini, Mistral.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#38bdf8">
+        <div class="agent-header"><span class="agent-icon">🤖</span><div><div class="agent-name">ai-integrator</div><div class="agent-role">AI Integration</div></div></div>
+        <p class="agent-desc" data-i18n="desc-ai-integrator">APIs IA (Anthropic, OpenAI), pipelines RAG, pgvector, streaming. Production-ready.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#34d399">
+        <div class="agent-header"><span class="agent-icon">📡</span><div><div class="agent-name">veille-technologie</div><div class="agent-role">Tech Watch</div></div></div>
+        <p class="agent-desc" data-i18n="desc-veille">Benchmarks de stacks, recommandations, alertes migration. Radar technologique à jour.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ÉQUIPE COMM -->
+  <section class="team-section">
+    <div class="section-title">
+      <h2 data-i18n="team-comm">📣 Équipe Communication &amp; Growth</h2>
+      <span class="count">11 agents</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="agent-grid">
+
+      <div class="agent-card" style="--c:#f43f5e">
+        <div class="agent-header"><span class="agent-icon">🎬</span><div><div class="agent-name">directeur-creatif</div><div class="agent-role" data-i18n="role-directeur">Lead Créatif</div></div></div>
+        <p class="agent-desc" data-i18n="desc-directeur">Vision de marque, positionnement créatif, coordination de l'équipe comm.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#d946ef">
+        <div class="agent-header"><span class="agent-icon">🔀</span><div><div class="agent-name">orchestrateur-comm</div><div class="agent-role" data-i18n="role-orch-comm">Orchestrateur Comm</div></div></div>
+        <p class="agent-desc" data-i18n="desc-orch-comm">Décompose les projets comm complexes, coordonne les livrables multi-canaux.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#8b5cf6">
+        <div class="agent-header"><span class="agent-icon">🗺️</span><div><div class="agent-name">stratege-comm</div><div class="agent-role" data-i18n="role-stratege">Stratégie</div></div></div>
+        <p class="agent-desc" data-i18n="desc-stratege">Plans de communication 360°, positionnement, choix des canaux, KPIs mesurables.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#f59e0b">
+        <div class="agent-header"><span class="agent-icon">💡</span><div><div class="agent-name">product-thinker</div><div class="agent-role" data-i18n="role-product">Produit</div></div></div>
+        <p class="agent-desc" data-i18n="desc-product">User stories, roadmap, RICE / MoSCoW. Pont entre vision business et technique.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#6366f1">
+        <div class="agent-header"><span class="agent-icon">💎</span><div><div class="agent-name">brand-strategist</div><div class="agent-role">Branding</div></div></div>
+        <p class="agent-desc" data-i18n="desc-brand">Identité de marque, messaging framework, tone of voice, brand story, naming.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#14b8a6">
+        <div class="agent-header"><span class="agent-icon">✍️</span><div><div class="agent-name">redacteur-web</div><div class="agent-role" data-i18n="role-redacteur">Contenu</div></div></div>
+        <p class="agent-desc" data-i18n="desc-redacteur">Copywriting, landing pages, articles SEO. AIDA, PAS, FAB. Variantes A/B.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#06b6d4">
+        <div class="agent-header"><span class="agent-icon">📱</span><div><div class="agent-name">social-media-manager</div><div class="agent-role">Social Media</div></div></div>
+        <p class="agent-desc" data-i18n="desc-social">Calendriers éditoriaux, posts multi-plateformes. LinkedIn, Instagram, X, TikTok.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#f97316">
+        <div class="agent-header"><span class="agent-icon">📧</span><div><div class="agent-name">email-marketer</div><div class="agent-role">Email Marketing</div></div></div>
+        <p class="agent-desc" data-i18n="desc-email">Séquences email, newsletters, automation. Un email = une intention = un CTA.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#22c55e">
+        <div class="agent-header"><span class="agent-icon">📈</span><div><div class="agent-name">growth-hacker</div><div class="agent-role">Growth</div></div></div>
+        <p class="agent-desc" data-i18n="desc-growth">Acquisition, activation, rétention. AARRR, ICE scoring, funnel optimization.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#ef4444">
+        <div class="agent-header"><span class="agent-icon">📣</span><div><div class="agent-name">ads-manager</div><div class="agent-role">Paid Media</div></div></div>
+        <p class="agent-desc" data-i18n="desc-ads">Meta Ads, Google Ads, TikTok Ads, LinkedIn Ads. Structure campagnes, ROAS.</p>
+      </div>
+
+      <div class="agent-card" style="--c:#84cc16">
+        <div class="agent-header"><span class="agent-icon">🔎</span><div><div class="agent-name">seo-specialist</div><div class="agent-role">SEO</div></div></div>
+        <p class="agent-desc" data-i18n="desc-seo">SEO technique et éditorial, Core Web Vitals, données structurées, cluster content.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PIVOT -->
+  <section class="team-section">
+    <div class="section-title">
+      <h2 data-i18n="team-pivot">⚖️ Pivot Dev ↔ Comm</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="pivot-card">
+      <div class="p-icon">⚖️</div>
+      <div>
+        <h3>legal-advisor</h3>
+        <p data-i18n="desc-legal">Expert juridique produit digital. CGU, politique de confidentialité, mentions légales, conformité RGPD/CCPA et licences open-source. Pont entre tech et juridique — à invoquer avant tout lancement produit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÉTA -->
+  <section class="team-section">
+    <div class="section-title">
+      <h2 data-i18n="team-meta">🧬 Agents méta</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="meta-grid">
+      <div class="meta-card">
+        <div class="m-icon">🧬</div>
+        <div>
+          <h3>agent-maker</h3>
+          <p data-i18n="desc-agent-maker">Crée un nouvel agent sur mesure quand une compétence manque à l'équipe. Analyse le gap, choisit le bon modèle, rédige les instructions complètes.</p>
+        </div>
+      </div>
+      <div class="meta-card">
+        <div class="m-icon">🧠</div>
+        <div>
+          <h3>context-manager</h3>
+          <p data-i18n="desc-context-manager">Mémoire du projet entre les sessions. Gère CLAUDE.md, résume les sessions longues, prépare les handoffs. Invoqué automatiquement en début et fin de session.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARDS -->
+  <section class="dashboards-section">
+    <div class="section-title">
+      <h2 data-i18n="dashboards-title">Dashboards interactifs</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="dashboards-grid">
+      <a class="dashboard-card dev-card" href="agent-dev/dashboard.html">
+        <div class="d-icon">🛠️</div>
+        <h3 data-i18n="dash-dev-title">Dashboard Développement</h3>
+        <p data-i18n="dash-dev-desc">Vue complète de l'équipe dev — rôles, modèles, outils, escalades. 15 agents.</p>
+        <div class="arrow" data-i18n="open-dash">Ouvrir le dashboard →</div>
+      </a>
+      <a class="dashboard-card comm-card" href="agent-com/dashboard-comm.html">
+        <div class="d-icon">📣</div>
+        <h3 data-i18n="dash-comm-title">Dashboard Communication</h3>
+        <p data-i18n="dash-comm-desc">Vue complète de l'équipe comm — rôles, stratégies, canaux. 11 agents.</p>
+        <div class="arrow" data-i18n="open-dash">Ouvrir le dashboard →</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    agents-library · npx github:miraboy/agents · Claude Code · Codex · Copilot · Amazon Q · Aider
+  </footer>
+
+</div>
+<script>
+  /* ── TRANSLATIONS ── */
+  const t = {
+    fr: {
+      'hero-tag':          'agents library',
+      'hero-sub':          '30 agents spécialisés — dev, comm, IA, juridique — coordonnés par un super-chef.<br>Un seul point d\'entrée, tous les outils AI supportés.',
+      'copy-btn':          'copier',
+      'copy-done':         'copié !',
+      'stat-total':        'agents total',
+      'stat-dev':          'équipe dev',
+      'stat-comm':         'équipe comm',
+      'stat-ai':           'agents IA',
+      'stat-tools':        'outils supportés',
+      'entry-title':       'Point d\'entrée unique',
+      'superchef-desc':    'CEO technique / Chief of Staff. Reçoit toutes les demandes — dev, comm, produit ou mixtes — et route intelligemment vers le bon spécialiste. Tu n\'as jamais à choisir qui appeler.',
+      'model-opus':        'Opus · Haut niveau',
+      'team-dev':          '🛠️ Équipe Développement',
+      'team-comm':         '📣 Équipe Communication &amp; Growth',
+      'team-pivot':        '⚖️ Pivot Dev ↔ Comm',
+      'team-meta':         '🧬 Agents méta',
+      'dashboards-title':  'Dashboards interactifs',
+      'open-dash':         'Ouvrir le dashboard →',
+      'role-chef-equipe':  'Lead Dev / CTO',
+      'role-orchestrateur':'Orchestrateur',
+      'role-architecte':   'Architecture',
+      'role-backend':      'Backend',
+      'role-frontend':     'Frontend',
+      'role-mobile':       'Mobile',
+      'role-securite':     'Sécurité',
+      'role-tech-writer':  'Documentation',
+      'role-directeur':    'Lead Créatif',
+      'role-orch-comm':    'Orchestrateur Comm',
+      'role-stratege':     'Stratégie',
+      'role-product':      'Produit',
+      'role-redacteur':    'Contenu',
+      'desc-chef-equipe':  'Interlocuteur principal, comprend la vision, pilote l\'équipe et tient informé de l\'avancement.',
+      'desc-orchestrateur':'Décompose les projets complexes, assigne les agents, coordonne les flux parallèles.',
+      'desc-architecte':   'Conception système, choix de stack, ADRs. 2–3 options avec trade-offs explicites.',
+      'desc-backend-dev':  'Bun, Hono, Elysia, tRPC v11, NestJS, FastAPI. PostgreSQL + Drizzle ORM.',
+      'desc-frontend-dev': 'React 19, Next.js 15, TanStack Router/Query, shadcn/ui, Biome. WCAG 2.1 AA.',
+      'desc-mobile-dev':   'React Native + Expo SDK 52+ (New Architecture), NativeWind v4, Flutter, EAS.',
+      'desc-devops':       'CI/CD, Docker multi-stage, infrastructure as code. Zéro déploiement manuel en prod.',
+      'desc-qa-testeur':   'Tests unitaires, intégration, E2E. Couverture &gt;80%. Vitest, Pytest, Playwright.',
+      'desc-securite':     'Audit OWASP Top 10, JWT, XSS, IDOR. Vulnérabilité critique = blocage production.',
+      'desc-tech-writer':  'READMEs, docs OpenAPI, guides utilisateur, changelogs. Lit le code avant d\'écrire.',
+      'desc-data-analyst': 'Métriques produit, KPIs, dashboards. SQL, Python/pandas, A/B testing.',
+      'desc-ux-researcher':'Tests utilisateurs, heuristiques Nielsen, parcours UX, personas, accessibilité.',
+      'desc-prompt-engineer':'System prompts, agents LLM, CoT, ReAct, RAG. Claude, GPT-4o, Gemini, Mistral.',
+      'desc-ai-integrator':'APIs IA (Anthropic, OpenAI), pipelines RAG, pgvector, streaming. Production-ready.',
+      'desc-veille':       'Benchmarks de stacks, recommandations, alertes migration. Radar technologique à jour.',
+      'desc-directeur':    'Vision de marque, positionnement créatif, coordination de l\'équipe comm.',
+      'desc-orch-comm':    'Décompose les projets comm complexes, coordonne les livrables multi-canaux.',
+      'desc-stratege':     'Plans de communication 360°, positionnement, choix des canaux, KPIs mesurables.',
+      'desc-product':      'User stories, roadmap, RICE / MoSCoW. Pont entre vision business et technique.',
+      'desc-brand':        'Identité de marque, messaging framework, tone of voice, brand story, naming.',
+      'desc-redacteur':    'Copywriting, landing pages, articles SEO. AIDA, PAS, FAB. Variantes A/B.',
+      'desc-social':       'Calendriers éditoriaux, posts multi-plateformes. LinkedIn, Instagram, X, TikTok.',
+      'desc-email':        'Séquences email, newsletters, automation. Un email = une intention = un CTA.',
+      'desc-growth':       'Acquisition, activation, rétention. AARRR, ICE scoring, funnel optimization.',
+      'desc-ads':          'Meta Ads, Google Ads, TikTok Ads, LinkedIn Ads. Structure campagnes, ROAS.',
+      'desc-seo':          'SEO technique et éditorial, Core Web Vitals, données structurées, cluster content.',
+      'desc-legal':        'Expert juridique produit digital. CGU, politique de confidentialité, mentions légales, conformité RGPD/CCPA et licences open-source. Pont entre tech et juridique — à invoquer avant tout lancement produit.',
+      'desc-agent-maker':  'Crée un nouvel agent sur mesure quand une compétence manque à l\'équipe. Analyse le gap, choisit le bon modèle, rédige les instructions complètes.',
+      'desc-context-manager':'Mémoire du projet entre les sessions. Gère CLAUDE.md, résume les sessions longues, prépare les handoffs. Invoqué automatiquement en début et fin de session.',
+      'dash-dev-title':    'Dashboard Développement',
+      'dash-dev-desc':     'Vue complète de l\'équipe dev — rôles, modèles, outils, escalades. 15 agents.',
+      'dash-comm-title':   'Dashboard Communication',
+      'dash-comm-desc':    'Vue complète de l\'équipe comm — rôles, stratégies, canaux. 11 agents.',
+    },
+    en: {
+      'hero-tag':          'agents library',
+      'hero-sub':          '30 specialized agents — dev, comm, AI, legal — coordinated by a super-chef.<br>One single entry point, all AI tools supported.',
+      'copy-btn':          'copy',
+      'copy-done':         'copied!',
+      'stat-total':        'total agents',
+      'stat-dev':          'dev team',
+      'stat-comm':         'comm team',
+      'stat-ai':           'AI agents',
+      'stat-tools':        'tools supported',
+      'entry-title':       'Single entry point',
+      'superchef-desc':    'Technical CEO / Chief of Staff. Receives all requests — dev, comm, product or mixed — and intelligently routes to the right specialist. You never have to choose who to call.',
+      'model-opus':        'Opus · High level',
+      'team-dev':          '🛠️ Development Team',
+      'team-comm':         '📣 Communication &amp; Growth Team',
+      'team-pivot':        '⚖️ Pivot Dev ↔ Comm',
+      'team-meta':         '🧬 Meta agents',
+      'dashboards-title':  'Interactive dashboards',
+      'open-dash':         'Open dashboard →',
+      'role-chef-equipe':  'Lead Dev / CTO',
+      'role-orchestrateur':'Orchestrator',
+      'role-architecte':   'Architecture',
+      'role-backend':      'Backend',
+      'role-frontend':     'Frontend',
+      'role-mobile':       'Mobile',
+      'role-securite':     'Security',
+      'role-tech-writer':  'Documentation',
+      'role-directeur':    'Creative Lead',
+      'role-orch-comm':    'Comm Orchestrator',
+      'role-stratege':     'Strategy',
+      'role-product':      'Product',
+      'role-redacteur':    'Content',
+      'desc-chef-equipe':  'Main point of contact, understands the vision, leads the team and keeps stakeholders informed.',
+      'desc-orchestrateur':'Breaks down complex projects, assigns agents, coordinates parallel workflows.',
+      'desc-architecte':   'System design, stack choices, ADRs. 2–3 options with explicit trade-offs.',
+      'desc-backend-dev':  'Bun, Hono, Elysia, tRPC v11, NestJS, FastAPI. PostgreSQL + Drizzle ORM.',
+      'desc-frontend-dev': 'React 19, Next.js 15, TanStack Router/Query, shadcn/ui, Biome. WCAG 2.1 AA.',
+      'desc-mobile-dev':   'React Native + Expo SDK 52+ (New Architecture), NativeWind v4, Flutter, EAS.',
+      'desc-devops':       'CI/CD, multi-stage Docker, infrastructure as code. Zero manual deployments in prod.',
+      'desc-qa-testeur':   'Unit, integration, E2E tests. &gt;80% coverage. Vitest, Pytest, Playwright.',
+      'desc-securite':     'OWASP Top 10 audit, JWT, XSS, IDOR. Critical vulnerability = production block.',
+      'desc-tech-writer':  'READMEs, OpenAPI docs, user guides, changelogs. Reads the code before writing.',
+      'desc-data-analyst': 'Product metrics, KPIs, dashboards. SQL, Python/pandas, A/B testing.',
+      'desc-ux-researcher':'User testing, Nielsen heuristics, UX journeys, personas, accessibility.',
+      'desc-prompt-engineer':'System prompts, LLM agents, CoT, ReAct, RAG. Claude, GPT-4o, Gemini, Mistral.',
+      'desc-ai-integrator':'AI APIs (Anthropic, OpenAI), RAG pipelines, pgvector, streaming. Production-ready.',
+      'desc-veille':       'Stack benchmarks, recommendations, migration alerts. Up-to-date tech radar.',
+      'desc-directeur':    'Brand vision, creative positioning, coordination of the comm team.',
+      'desc-orch-comm':    'Breaks down complex comm projects, coordinates multi-channel deliverables.',
+      'desc-stratege':     '360° communication plans, positioning, channel selection, measurable KPIs.',
+      'desc-product':      'User stories, roadmap, RICE / MoSCoW. Bridge between business vision and tech.',
+      'desc-brand':        'Brand identity, messaging framework, tone of voice, brand story, naming.',
+      'desc-redacteur':    'Copywriting, landing pages, SEO articles. AIDA, PAS, FAB. A/B variants.',
+      'desc-social':       'Editorial calendars, multi-platform posts. LinkedIn, Instagram, X, TikTok.',
+      'desc-email':        'Email sequences, newsletters, automation. One email = one intent = one CTA.',
+      'desc-growth':       'Acquisition, activation, retention. AARRR, ICE scoring, funnel optimization.',
+      'desc-ads':          'Meta Ads, Google Ads, TikTok Ads, LinkedIn Ads. Campaign structure, ROAS.',
+      'desc-seo':          'Technical and editorial SEO, Core Web Vitals, structured data, content clusters.',
+      'desc-legal':        'Digital product legal expert. Terms of service, privacy policy, legal notices, GDPR/CCPA compliance and open-source licenses. Bridge between tech and legal — invoke before any product launch.',
+      'desc-agent-maker':  'Creates a custom agent when the team lacks a skill. Analyzes the gap, picks the right model, writes complete instructions.',
+      'desc-context-manager':'Project memory across sessions. Manages CLAUDE.md, summarizes long sessions, prepares handoffs. Automatically invoked at session start and end.',
+      'dash-dev-title':    'Development Dashboard',
+      'dash-dev-desc':     'Full view of the dev team — roles, models, tools, escalations. 15 agents.',
+      'dash-comm-title':   'Communication Dashboard',
+      'dash-comm-desc':    'Full view of the comm team — roles, strategies, channels. 11 agents.',
+    }
+  };
+
+  /* ── THEME ── */
+  function toggleTheme() {
+    const curr = document.documentElement.getAttribute('data-theme');
+    const next = curr === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateThemeBtn(next);
+  }
+
+  function updateThemeBtn(theme) {
+    document.getElementById('theme-btn').textContent =
+      theme === 'dark' ? '☀️ light' : '🌙 dark';
+  }
+
+  /* ── LANG ── */
+  let lang = localStorage.getItem('lang') || 'fr';
+
+  function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    localStorage.setItem('lang', lang);
+    applyLang();
+  }
+
+  function applyLang() {
+    document.getElementById('lang-btn').textContent = lang === 'fr' ? 'EN' : 'FR';
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[lang] && t[lang][key] !== undefined) {
+        el.innerHTML = t[lang][key];
+      }
+    });
+  }
+
+  /* ── COPY ── */
+  function copyInstall() {
+    const cmd = document.getElementById('install-cmd').textContent;
+    const btn = document.getElementById('copy-btn');
+    navigator.clipboard.writeText(cmd).then(() => {
+      btn.innerHTML = t[lang]['copy-done'];
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = t[lang]['copy-btn'];
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  /* ── INIT ── */
+  updateThemeBtn(document.documentElement.getAttribute('data-theme'));
+  applyLang();
+</script>
 </body>
 </html>
