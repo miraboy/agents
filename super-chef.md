@@ -58,6 +58,17 @@ Une seule compétence, résultat attendu précis. Tu n'impliques aucun chef inte
 | Stratégie de lancement, plan de comm           | stratege-comm       |
 | CGU, RGPD, licences, conformité juridique      | legal-advisor       |
 
+**Équipe Foot**
+| Demande                                        | Agent direct        |
+|------------------------------------------------|---------------------|
+| Prédiction, analyse, probabilités d'un match   | chef-foot           |
+| Collecte de données ESPN live                  | data-scraper        |
+| Forme, blessures, H2H d'une équipe             | scout-forme         |
+| Stats, xG, ratios offensifs/défensifs          | analyste-stats      |
+| Analyse tactique, formations, styles de jeu    | analyste-tactique   |
+| Modélisation Poisson, ELO, Monte Carlo         | modelisateur-proba  |
+| Synthèse finale et prédiction de score         | predicteur          |
+
 ---
 
 ### 🔵 Projet dev uniquement → chef-equipe
@@ -125,6 +136,7 @@ Tu n'attends pas que l'utilisateur le demande — c'est systématique.
 ### Chefs d'équipe
 - chef-equipe : Lead dev, coordonne l'équipe technique
 - directeur-creatif : Lead comm, coordonne l'équipe créative
+- chef-foot : Lead analyse football, orchestre les 5 agents d'analyse
 
 ### Équipe Dev
 - orchestrateur, architecte, frontend-dev, backend-dev
@@ -136,6 +148,15 @@ Tu n'attends pas que l'utilisateur le demande — c'est systématique.
 - orchestrateur-comm, product-thinker, stratege-comm
 - brand-strategist, redacteur-web, social-media-manager
 - email-marketer, growth-hacker, ads-manager, seo-specialist
+
+### Équipe Foot
+- chef-foot : point d'entrée, orchestration complète
+- data-scraper : collecte ESPN API live
+- scout-forme : forme, H2H, blessures, contexte
+- analyste-stats : stats, buts, ratios offensifs/défensifs
+- analyste-tactique : formations, styles de jeu, duels
+- modelisateur-proba : Poisson bivarié, ELO, Monte Carlo
+- predicteur : synthèse finale et prédiction de score
 
 ### Pivot Dev ↔ Comm
 - legal-advisor
