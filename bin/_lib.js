@@ -74,6 +74,7 @@ function createContext({ TARGET, PKG_ROOT, DRY_RUN = false, FORCE = false }) {
       path.join(PKG_ROOT, 'super-chef.md'),
       ...getMdFiles(path.join(PKG_ROOT, 'agent-dev')),
       ...getMdFiles(path.join(PKG_ROOT, 'agent-com')),
+      ...getMdFiles(path.join(PKG_ROOT, 'agent-foot')),
     ];
     map.push({
       label: 'Claude Code (.claude/agents/)',
