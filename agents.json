@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated": "2026-02-19",
+  "updated": "2026-03-04",
   "teams": {
     "root": {
       "label": "Super-Chef (point d'entrée unique)",
@@ -429,6 +429,110 @@
           "description": "Audite la santé technique des sites, optimise la structure et les contenus pour le référencement naturel. Pont entre dev et comm.",
           "escalationTargets": ["directeur-creatif", "chef-equipe", "frontend-dev"],
           "skills": ["Core Web Vitals", "Schema.org", "Recherche de mots-clés", "Audit SEO", "Cluster content"]
+        }
+      ]
+    },
+    "foot": {
+      "label": "Équipe Analyse Football & Prédictions",
+      "lead": "chef-foot",
+      "agents": [
+        {
+          "id": "data-scraper",
+          "team": "foot",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Bash", "Read", "Write", "Edit", "Glob", "WebFetch"],
+          "icon": "🕷️",
+          "color": "#6366f1",
+          "role": "Data Collector",
+          "title": "Scraper — Collecte de données football live",
+          "description": "Phase 0 du pipeline. Scrape understat.com (xG/xGA), transfermarkt (blessures), API-Football et sofascore pour fournir des données réelles et fraîches aux 5 agents d'analyse. Sauvegarde en cache JSON.",
+          "escalationTargets": ["chef-foot"],
+          "skills": ["Scraping web", "Understat xG", "API-Football", "Transfermarkt", "Cache JSON"]
+        },
+        {
+          "id": "chef-foot",
+          "team": "foot",
+          "model": "claude-opus-4-6",
+          "modelLabel": "Opus",
+          "tools": ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "Task"],
+          "icon": "⚽",
+          "color": "#16a34a",
+          "role": "Lead Analyse Football",
+          "title": "Chef d'équipe analyse football & prédictions",
+          "description": "Point d'entrée pour toute demande de prédiction de match. Orchestre les 5 agents spécialisés (scout-forme, analyste-stats, analyste-tactique, modelisateur-proba, predicteur) et produit un rapport final structuré.",
+          "escalationTargets": ["super-chef"],
+          "skills": ["Orchestration d'analyse", "Workflow football", "Rapport de prédiction"]
+        },
+        {
+          "id": "scout-forme",
+          "team": "foot",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Glob", "WebSearch"],
+          "icon": "🔭",
+          "color": "#0ea5e9",
+          "role": "Scouting & Forme",
+          "title": "Scout — État des équipes & disponibilités",
+          "description": "Analyse la forme récente (5-10 matchs), les blessures, suspensions, l'historique H2H, le contexte domicile/extérieur et les facteurs psychologiques.",
+          "escalationTargets": ["chef-foot"],
+          "skills": ["Forme récente", "Blessures & suspensions", "H2H", "Contexte match"]
+        },
+        {
+          "id": "analyste-stats",
+          "team": "foot",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Glob", "WebSearch"],
+          "icon": "📊",
+          "color": "#f59e0b",
+          "role": "Statistiques Avancées",
+          "title": "Analyste statistiques football (xG, xGA, PPDA)",
+          "description": "Analyse les métriques modernes : xG, xGA, PPDA, possession, passes progressives, tirs cadrés. Produit la comparaison statistique pour alimenter le modèle probabiliste.",
+          "escalationTargets": ["chef-foot", "analyste-tactique"],
+          "skills": ["xG / xGA", "PPDA / pressing", "Possession", "Métriques avancées"]
+        },
+        {
+          "id": "analyste-tactique",
+          "team": "foot",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Glob", "WebSearch"],
+          "icon": "♟️",
+          "color": "#8b5cf6",
+          "role": "Analyse Tactique",
+          "title": "Analyste tactique — Formations & duels de styles",
+          "description": "Analyse les formations, styles de jeu, duels tactiques clés et tendances d'entraîneur. Identifie les avantages et vulnérabilités tactiques qui influencent le résultat.",
+          "escalationTargets": ["chef-foot", "analyste-stats"],
+          "skills": ["Formations", "Duels tactiques", "Styles de jeu", "Analyse entraîneur"]
+        },
+        {
+          "id": "modelisateur-proba",
+          "team": "foot",
+          "model": "claude-sonnet-4-6",
+          "modelLabel": "Sonnet",
+          "tools": ["Read", "Write", "Edit", "Glob"],
+          "icon": "🎲",
+          "color": "#ef4444",
+          "role": "Modélisation Probabiliste",
+          "title": "Modélisateur probabiliste (Poisson, ELO, Monte Carlo)",
+          "description": "Calcule les probabilités précises de chaque issue (1N2), les buts attendus, BTTS et cotes théoriques via les modèles Poisson bivarié, ELO et simulation Monte Carlo.",
+          "escalationTargets": ["chef-foot", "analyste-stats"],
+          "skills": ["Poisson bivarié", "Système ELO", "Monte Carlo", "Cotes théoriques", "Value betting"]
+        },
+        {
+          "id": "predicteur",
+          "team": "foot",
+          "model": "claude-opus-4-6",
+          "modelLabel": "Opus",
+          "tools": ["Read", "Write", "Edit", "Glob"],
+          "icon": "🏆",
+          "color": "#ffd700",
+          "role": "Prédiction Finale",
+          "title": "Prédicteur — Synthèse & prédiction finale",
+          "description": "Synthétise toutes les analyses (forme, stats, tactique, probabilités) pour produire une prédiction structurée avec score prédit, marchés recommandés et niveau de confiance global.",
+          "escalationTargets": ["chef-foot"],
+          "skills": ["Synthèse multi-modèles", "Score prédit", "Value betting", "Niveau de confiance"]
         }
       ]
     },
