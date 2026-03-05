@@ -1,0 +1,347 @@
+{
+  "match": {
+    "home": "Manchester City",
+    "away": "Nottingham Forest",
+    "competition": "Premier League",
+    "date": "2026-03-04",
+    "scraped_at": "2026-03-04T15:52:05.266790+00:00"
+  },
+  "home_team": {
+    "espn_id": 382,
+    "form_5": [
+      "D",
+      "W",
+      "W",
+      "W",
+      "W"
+    ],
+    "form_10": [
+      "D",
+      "D",
+      "D",
+      "L",
+      "W",
+      "D",
+      "W",
+      "W",
+      "W",
+      "W"
+    ],
+    "recent_matches": [
+      {
+        "date": "2026-01-01",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Sunderland",
+        "score": "0-0",
+        "result": "D",
+        "goals_for": 0,
+        "goals_against": 0,
+        "espn_event_id": "740784"
+      },
+      {
+        "date": "2026-01-04",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Chelsea",
+        "score": "1-1",
+        "result": "D",
+        "goals_for": 1,
+        "goals_against": 1,
+        "espn_event_id": "740792"
+      },
+      {
+        "date": "2026-01-07",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Brighton & Hove Albion",
+        "score": "1-1",
+        "result": "D",
+        "goals_for": 1,
+        "goals_against": 1,
+        "espn_event_id": "740803"
+      },
+      {
+        "date": "2026-01-17",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Manchester United",
+        "score": "0-2",
+        "result": "L",
+        "goals_for": 0,
+        "goals_against": 2,
+        "espn_event_id": "740811"
+      },
+      {
+        "date": "2026-01-24",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Wolverhampton Wanderers",
+        "score": "2-0",
+        "result": "W",
+        "goals_for": 2,
+        "goals_against": 0,
+        "espn_event_id": "740823"
+      },
+      {
+        "date": "2026-02-01",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Tottenham Hotspur",
+        "score": "2-2",
+        "result": "D",
+        "goals_for": 2,
+        "goals_against": 2,
+        "espn_event_id": "740828"
+      },
+      {
+        "date": "2026-02-08",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Liverpool",
+        "score": "2-1",
+        "result": "W",
+        "goals_for": 2,
+        "goals_against": 1,
+        "espn_event_id": "740845"
+      },
+      {
+        "date": "2026-02-11",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Fulham",
+        "score": "3-0",
+        "result": "W",
+        "goals_for": 3,
+        "goals_against": 0,
+        "espn_event_id": "740849"
+      },
+      {
+        "date": "2026-02-21",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Newcastle United",
+        "score": "2-1",
+        "result": "W",
+        "goals_for": 2,
+        "goals_against": 1,
+        "espn_event_id": "740857"
+      },
+      {
+        "date": "2026-02-28",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Leeds United",
+        "score": "1-0",
+        "result": "W",
+        "goals_for": 1,
+        "goals_against": 0,
+        "espn_event_id": "740869"
+      }
+    ],
+    "season_stats": {
+      "matches_played": 20,
+      "goals_scored_per_match": 2.0,
+      "goals_conceded_per_match": 0.95,
+      "win_rate": 0.65,
+      "home_win_rate": 0.8,
+      "away_win_rate": 0.5
+    },
+    "home_stats": {
+      "form_5": [
+        "D",
+        "D",
+        "W",
+        "W",
+        "W"
+      ],
+      "goals_for_per_match": 2.43,
+      "goals_against_per_match": 0.64
+    },
+    "injuries": [],
+    "suspensions": [],
+    "squad_availability": "unknown (API-Football key required)"
+  },
+  "away_team": {
+    "espn_id": 371,
+    "form_5": [
+      "L",
+      "W",
+      "D",
+      "D",
+      "L"
+    ],
+    "form_10": [
+      "D",
+      "L",
+      "L",
+      "W",
+      "W",
+      "L",
+      "W",
+      "D",
+      "D",
+      "L"
+    ],
+    "recent_matches": [
+      {
+        "date": "2025-12-30",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Brighton & Hove Albion",
+        "score": "2-2",
+        "result": "D",
+        "goals_for": 2,
+        "goals_against": 2,
+        "espn_event_id": "740785"
+      },
+      {
+        "date": "2026-01-03",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Wolverhampton Wanderers",
+        "score": "0-3",
+        "result": "L",
+        "goals_for": 0,
+        "goals_against": 3,
+        "espn_event_id": "740787"
+      },
+      {
+        "date": "2026-01-06",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Nottingham Forest",
+        "score": "1-2",
+        "result": "L",
+        "goals_for": 1,
+        "goals_against": 2,
+        "espn_event_id": "740801"
+      },
+      {
+        "date": "2026-01-17",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Tottenham Hotspur",
+        "score": "2-1",
+        "result": "W",
+        "goals_for": 2,
+        "goals_against": 1,
+        "espn_event_id": "740814"
+      },
+      {
+        "date": "2026-01-24",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Sunderland",
+        "score": "3-1",
+        "result": "W",
+        "goals_for": 3,
+        "goals_against": 1,
+        "espn_event_id": "740825"
+      },
+      {
+        "date": "2026-01-31",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Chelsea",
+        "score": "2-3",
+        "result": "L",
+        "goals_for": 2,
+        "goals_against": 3,
+        "espn_event_id": "740835"
+      },
+      {
+        "date": "2026-02-07",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Burnley",
+        "score": "2-0",
+        "result": "W",
+        "goals_for": 2,
+        "goals_against": 0,
+        "espn_event_id": "740839"
+      },
+      {
+        "date": "2026-02-10",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "Manchester United",
+        "score": "1-1",
+        "result": "D",
+        "goals_for": 1,
+        "goals_against": 1,
+        "espn_event_id": "740855"
+      },
+      {
+        "date": "2026-02-21",
+        "competition": "2025-26 English Premier League",
+        "home": true,
+        "opponent": "AFC Bournemouth",
+        "score": "0-0",
+        "result": "D",
+        "goals_for": 0,
+        "goals_against": 0,
+        "espn_event_id": "740861"
+      },
+      {
+        "date": "2026-02-28",
+        "competition": "2025-26 English Premier League",
+        "home": false,
+        "opponent": "Liverpool",
+        "score": "2-5",
+        "result": "L",
+        "goals_for": 2,
+        "goals_against": 5,
+        "espn_event_id": "740872"
+      }
+    ],
+    "season_stats": {
+      "matches_played": 20,
+      "goals_scored_per_match": 1.4,
+      "goals_conceded_per_match": 1.8,
+      "win_rate": 0.25,
+      "home_win_rate": 0.3,
+      "away_win_rate": 0.2
+    },
+    "away_stats": {
+      "form_5": [
+        "L",
+        "W",
+        "L",
+        "W",
+        "L"
+      ],
+      "goals_for_per_match": 1.21,
+      "goals_against_per_match": 1.93
+    },
+    "injuries": [],
+    "suspensions": [],
+    "squad_availability": "unknown (API-Football key required)"
+  },
+  "h2h": {
+    "found": 1,
+    "last_5": [
+      {
+        "date": "2025-12-27",
+        "competition": "2025-26 English Premier League",
+        "score": "2-1",
+        "winner": "away",
+        "home_team": "team_b"
+      }
+    ],
+    "home_wins": 0,
+    "draws": 0,
+    "away_wins": 1,
+    "avg_goals_per_match": 3.0
+  },
+  "odds": {},
+  "data_quality": {
+    "espn_home": true,
+    "espn_away": true,
+    "xg_available": false,
+    "injuries_confirmed": false,
+    "h2h_found": true,
+    "reliability": "high",
+    "note": "xG non disponible via ESPN — utiliser API-Football (APIFOOTBALL_KEY) pour les stats avancées"
+  }
+}
